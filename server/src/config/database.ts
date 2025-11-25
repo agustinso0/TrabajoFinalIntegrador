@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
 
+// configuracion de conexion a mongo
+const MONGO_OPTIONS = {
+  bufferCommands: false,
+  maxPoolSize: 5,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 30000,
+};
+
 // conectar con mongo
 const connectDB = async (): Promise<void> => {
   try {
@@ -9,16 +17,8 @@ const connectDB = async (): Promise<void> => {
       throw new Error("MONGODB_URI no encontrada en .env");
     }
 
-    // opciones de conexion
     // TODO: revisar si necesitamos mas configuracion para produccion
-    const options = {
-      bufferCommands: false,
-      maxPoolSize: 5,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 30000,
-    };
-
-    await mongoose.connect(mongoURI, options);
+    await mongoose.connect(mongoURI, MONGO_OPTIONS);
 
     console.log(`🚀 MongoDB conectado: ${mongoose.connection.host}`);
     console.log(`📁 Base de datos: ${mongoose.connection.name}`);
