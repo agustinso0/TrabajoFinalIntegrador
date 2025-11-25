@@ -4,8 +4,13 @@ import Payment from "../models/Payment.js";
 import Reservation from "../models/Reservation.js";
 import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 
-// metodos de pago permitidos
+// constantes de estados y métodos de pago
 const ALLOWED_PAYMENT_METHODS = ["cash", "manual"];
+const PAYMENT_STATUS_APPROVED = "approved";
+const PAYMENT_STATUS_REJECTED = "rejected";
+const PAYMENT_STATUS_CANCELLED = "cancelled";
+const PAYMENT_STATUS_PENDING = "pending";
+const UPDATABLE_PAYMENT_STATUSES = [PAYMENT_STATUS_APPROVED, PAYMENT_STATUS_REJECTED, PAYMENT_STATUS_CANCELLED];
 
 // crear pago manual
 export const createManualPayment = asyncHandler(
@@ -71,7 +76,7 @@ export const createManualPayment = asyncHandler(
       paymentMethod,
       amount: reservation.totalAmount,
       currency: "ARS",
-      status: paymentMethod === "cash" ? "pending" : "pending",
+      status: paymentMethod === "cash" ? PAYMENT_STATUS_PENDING : PAYMENT_STATUS_PENDING,
       notes,
       processedBy: req.user.role !== "passenger" ? req.user._id : undefined,
     });
@@ -138,8 +143,11 @@ export const updatePaymentStatus = asyncHandler(
     const { paymentId } = req.params;
     const { status, notes } = req.body;
 
-    if (!["approved", "rejected", "cancelled"].includes(status)) {
-      throw createError("Estado de pago inválido", 400);
+    if (!UPDATABLE_PAYMENT_STATUSES.includes(status)) {
+      throw createError(
+        `Estado de pago inválido. Debe ser: ${UPDATABLE_PAYMENT_STATUSES.join(", ")}`,
+        400
+      );
     }
 
     const payment = await Payment.findById(paymentId);
@@ -147,7 +155,7 @@ export const updatePaymentStatus = asyncHandler(
       throw createError("Pago no encontrado", 404);
     }
 
-    if (payment.status !== "pending") {
+    if (payment.status !== PAYMENT_STATUS_PENDING) {
       throw createError("Solo se pueden modificar pagos pendientes", 400);
     }
 
