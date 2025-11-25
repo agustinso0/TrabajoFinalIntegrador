@@ -13,6 +13,10 @@ class Logger {
     console.log(`ℹ️  ${message}`, data || "");
   }
 
+  success(message: string, data?: any): void {
+    console.log(`✅ ${message}`, data || "");
+  }
+
   debug(message: string, data?: any): void {
     if (process.env.NODE_ENV !== "production") {
       console.log(`🐛 ${message}`, data || "");
