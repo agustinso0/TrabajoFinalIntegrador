@@ -25,7 +25,7 @@ export const errorHandler = (
   // errores comunes de mongoose
   if (error.name === "ValidationError") {
     statusCode = 400;
-    message = "Datos invalidos";
+    message = "Error de validacion";
 
     const validationErrors = Object.values((error as any).errors).map(
       (err: any) => err.message
@@ -41,12 +41,12 @@ export const errorHandler = (
   // cuando el id no es valido
   if (error.name === "CastError") {
     statusCode = 400;
-    message = "ID invalido";
+    message = "Formato de ID incorrecto";
 
     return res.status(statusCode).json({
       success: false,
       message,
-      error: "El ID no tiene el formato correcto",
+      error: "El ID proporcionado no tiene el formato correcto",
     });
   }
 
