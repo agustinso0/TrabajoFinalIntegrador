@@ -7,6 +7,10 @@ import { ApiResponse } from "../types";
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const ONE_MINUTE = 60 * 1000;
 
+// limites de longitud para sanitizacion
+const MAX_BODY_STRING_LENGTH = 1000;
+const MAX_QUERY_STRING_LENGTH = 500;
+
 // rate limiter general para todo
 export const generalLimiter = rateLimit({
   windowMs: FIFTEEN_MINUTES,
@@ -53,7 +57,7 @@ export const sanitizeInput = (
         req.body[key] = req.body[key]
           .trim()
           .replace(/[<>]/g, "")
-          .slice(0, 1000);
+          .slice(0, MAX_BODY_STRING_LENGTH);
       }
     }
   }
@@ -65,7 +69,7 @@ export const sanitizeInput = (
         req.query[key] = (req.query[key] as string)
           .trim()
           .replace(/[<>]/g, "")
-          .slice(0, 500);
+          .slice(0, MAX_QUERY_STRING_LENGTH);
       }
     }
   }
