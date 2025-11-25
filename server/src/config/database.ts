@@ -26,17 +26,17 @@ const connectDB = async (): Promise<void> => {
     // TODO: revisar si necesitamos mas configuracion para produccion
     await mongoose.connect(mongoURI, MONGO_OPTIONS);
 
-    console.log(`🚀 MongoDB conectado: ${mongoose.connection.host}`);
-    console.log(`📁 Base de datos: ${mongoose.connection.name}`);
-    console.log(`🏢 ${process.env.COMPANY_NAME || DEFAULT_COMPANY_NAME}`);
+    console.log(` MongoDB conectado: ${mongoose.connection.host}`);
+    console.log(` Base de datos: ${mongoose.connection.name}`);
+    console.log(` ${process.env.COMPANY_NAME || DEFAULT_COMPANY_NAME}`);
 
     // eventos de conexion
     mongoose.connection.on("error", (err) => {
-      console.error("❌ Error de MongoDB:", err);
+      console.error(" Error de MongoDB:", err);
     });
 
     mongoose.connection.on("disconnected", () => {
-      console.log("👋 MongoDB desconectado");
+      console.log(" MongoDB desconectado");
     });
   } catch (error) {
     console.error("No se pudo conectar a MongoDB:", error);
