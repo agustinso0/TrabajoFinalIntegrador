@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { ApiResponse } from "../types";
 
-// middleware para verificar api key
+// validar que la request tenga api key valida
 export const apiKeyMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  // buscar api key en header o query
   const apiKey = req.header("X-API-Key") || (req.query.api_key as string);
   const requiredApiKey = process.env.API_KEY;
 
