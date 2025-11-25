@@ -115,7 +115,7 @@ export interface AuthenticatedRequest extends Request {
   body: any;
 }
 
-// respuestas de la API
+// estructura estandar para todas las respuestas de la API
 export interface ApiResponse<T = any> {
   success: boolean;
   message: string;
