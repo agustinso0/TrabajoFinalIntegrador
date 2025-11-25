@@ -2,8 +2,15 @@ import mongoose from "mongoose";
 import { CompanyConfig, ICompanyConfig } from "../models/CompanyConfig.js";
 import { logger } from "../utils/logger.js";
 
+/**
+ * Servicio para gestionar la configuración de la empresa
+ * Proporciona métodos para CRUD y gestión de configuración activa
+ */
 export class CompanyConfigService {
-  // traer config activa
+  /**
+   * Obtener la configuración activa de la empresa
+   * @returns La configuración activa o null si no existe
+   */
   static async getActiveConfig(): Promise<ICompanyConfig | null> {
     try {
       return await CompanyConfig.getActiveConfig();
@@ -13,12 +20,17 @@ export class CompanyConfigService {
     }
   }
 
-  // crear nueva config
+  /**
+   * Crear nueva configuración de empresa
+   * Desactiva automáticamente las configuraciones anteriores
+   * @param configData - Datos de la nueva configuración
+   * @returns La configuración creada
+   */
   static async createConfig(
     configData: Partial<ICompanyConfig>
   ): Promise<ICompanyConfig> {
     try {
-      // desactivar las anteriores
+      // desactivar las configuraciones anteriores
       await CompanyConfig.updateMany(
         { isActive: true },
         { $set: { isActive: false } }
@@ -28,15 +40,20 @@ export class CompanyConfigService {
       const newConfig = new CompanyConfig(configData);
       await newConfig.save();
 
-      logger.info(`Nueva config creada: ${configData.companyName}`);
+      logger.success(`Nueva configuración creada: ${configData.companyName}`);
       return newConfig;
     } catch (error) {
       logger.error("Error al crear configuración:", error);
-      throw new Error("No se pudo crear la configuración");
+      throw new Error("No se pudo crear la configuración de la empresa");
     }
   }
 
-  // actualizar config existente
+  /**
+   * Actualizar configuración existente
+   * @param configId - ID de la configuración a actualizar
+   * @param updateData - Datos a actualizar
+   * @returns La configuración actualizada
+   */
   static async updateConfig(
     configId: string,
     updateData: Partial<ICompanyConfig>
@@ -49,18 +66,22 @@ export class CompanyConfigService {
       );
 
       if (!updatedConfig) {
-        throw new Error("Configuración no encontrada");
+        throw new Error("Configuración no encontrada en la base de datos");
       }
 
-      logger.info(`Config actualizada: ${updatedConfig.companyName}`);
+      logger.success(`Configuración actualizada: ${updatedConfig.companyName}`);
       return updatedConfig;
     } catch (error) {
-      logger.error("Error al actualizar:", error);
-      throw new Error("No se pudo actualizar");
+      logger.error("Error al actualizar configuración:", error);
+      throw new Error("No se pudo actualizar la configuración");
     }
   }
 
-  // borrar config
+  /**
+   * Desactivar configuración (borrado lógico)
+   * @param configId - ID de la configuración a desactivar
+   * @returns true si se desactivó correctamente
+   */
   static async deleteConfig(configId: string): Promise<boolean> {
     try {
       const result = await CompanyConfig.findByIdAndUpdate(
@@ -69,32 +90,38 @@ export class CompanyConfigService {
         { new: true }
       );
 
-      logger.info(`Config eliminada: ${configId}`);
+      logger.info(`Configuración desactivada: ${configId}`);
       return !!result;
     } catch (error) {
-      logger.error("Error al eliminar:", error);
-      throw new Error("No se pudo eliminar");
+      logger.error("Error al desactivar configuración:", error);
+      throw new Error("No se pudo desactivar la configuración");
     }
   }
 
-  // info publica solo
+  /**
+   * Obtener información pública de la empresa
+   * @returns Información pública o null si no hay configuración activa
+   */
   static async getPublicInfo(): Promise<any> {
     try {
       const config = await CompanyConfig.getActiveConfig();
       return config ? config.getPublicInfo() : null;
     } catch (error) {
-      logger.error("Error al obtener info publica:", error);
+      logger.error("Error al obtener información pública:", error);
       return null;
     }
   }
 
-  // crear config default si no hay
+  /**
+   * Inicializar configuración por defecto si no existe ninguna
+   * @returns La configuración por defecto creada o la existente
+   */
   static async initializeDefault(): Promise<ICompanyConfig> {
     try {
       const existingConfig = await CompanyConfig.findOne({ isActive: true });
 
       if (existingConfig) {
-        logger.info("Ya hay una config activa");
+        logger.info("Ya existe una configuración activa");
         return existingConfig;
       }
 
@@ -109,11 +136,11 @@ export class CompanyConfigService {
       const newConfig = new CompanyConfig(defaultConfig);
       await newConfig.save();
 
-      logger.info("Config por defecto creada ok");
+      logger.success("Configuración por defecto creada correctamente");
       return newConfig;
     } catch (error) {
-      logger.error("Error al inicializar config:", error);
-      throw new Error("No se pudo inicializar");
+      logger.error("Error al inicializar configuración por defecto:", error);
+      throw new Error("No se pudo inicializar la configuración");
     }
   }
 }
