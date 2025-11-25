@@ -28,10 +28,9 @@ export const authorize = (...allowedRoles: UserRole[]) => {
   };
 };
 
-// middlewares por rol
+// middlewares por rol especifico
 export const requireAdmin = authorize("admin");
 export const requireOperator = authorize("admin", "operator");
-export const requireOperatorOrAdmin = authorize("admin", "operator");
 export const requireDriver = authorize("admin", "operator", "driver");
 export const requirePassenger = authorize(
   "admin",
@@ -39,6 +38,9 @@ export const requirePassenger = authorize(
   "driver",
   "passenger"
 );
+
+// alias para claridad
+export const requireOperatorOrAdmin = requireOperator;
 
 // verificar que sea suyo o admin
 export const requireOwnershipOrAdmin = (
