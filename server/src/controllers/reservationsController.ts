@@ -99,6 +99,7 @@ export const getUserReservations = asyncHandler(
 
     const filter: any = { passengerId: req.user._id };
 
+    // filtrar por estado si viene el parametro
     if (status) {
       filter.status = status;
     }
