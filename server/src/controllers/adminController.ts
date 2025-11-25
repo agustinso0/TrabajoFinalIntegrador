@@ -6,6 +6,10 @@ import RouteInstance from "../models/RouteInstance.js";
 import User from "../models/User.js";
 import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 
+// limites por defecto para admin
+const DEFAULT_ADMIN_USERS_LIMIT = 20;
+const DEFAULT_RECENT_LIMIT = 10;
+
 // resumen basico del sistema
 export const getBasicSummary = asyncHandler(
   async (req: Request, res: Response) => {
@@ -36,7 +40,7 @@ export const getBasicSummary = asyncHandler(
 // traer lista de usuarios
 export const getUsersList = asyncHandler(
   async (req: Request, res: Response) => {
-    const { role, page = 1, limit = 20 } = req.query;
+    const { role, page = 1, limit = DEFAULT_ADMIN_USERS_LIMIT } = req.query;
 
     const filter: any = { isActive: true };
     if (role) filter.role = role; // filtrar por rol si viene
@@ -77,7 +81,7 @@ export const getUsersList = asyncHandler(
 // ver reservas recientes
 export const getRecentReservations = asyncHandler(
   async (req: Request, res: Response) => {
-    const { limit = 10 } = req.query;
+    const { limit = DEFAULT_RECENT_LIMIT } = req.query;
 
     const reservations = await Reservation.find()
       .populate("passengerId", "firstName lastName email")
