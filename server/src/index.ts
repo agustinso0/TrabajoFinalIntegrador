@@ -59,15 +59,15 @@ app.use(
 // limitar requests
 app.use(generalLimiter);
 
-// logs para seguridad
+// registrar eventos de seguridad
 app.use(securityLogger);
 
 // middlewares comunes
-app.use(cors(corsConfig)); // para que funcione con el frontend
+app.use(cors(corsConfig)); // permitir requests del frontend
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// validaciones extra
+// middlewares de seguridad
 app.use(sanitizeInput);
 app.use(preventNoSQLInjection);
 
