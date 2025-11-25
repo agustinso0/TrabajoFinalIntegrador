@@ -54,8 +54,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   }
 
   // buscar usuario activo
-    "+password"
-  );
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.comparePassword(password))) {
     throw createError("Email o password incorrecto", 401);
