@@ -4,6 +4,32 @@ import User from "../models/User.js";
 import { generateToken } from "../middlewares/auth.js";
 import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 
+// Constantes de mensajes
+const MESSAGES = {
+  USER_CREATED: "Usuario creado",
+  USER_EXISTS: "El email ya esta en uso",
+  LOGIN_SUCCESS: "Login ok",
+  INVALID_CREDENTIALS: "Email o password incorrecto",
+  MISSING_CREDENTIALS: "Falta email o password",
+  NOT_AUTHENTICATED: "No estas logueado",
+  USER_NOT_FOUND: "Usuario no encontrado",
+  PROFILE_FOUND: "Perfil encontrado",
+  PROFILE_UPDATED: "Perfil actualizado",
+  PASSWORD_CHANGED: "Password cambiado",
+  INVALID_CURRENT_PASSWORD: "Password actual incorrecto",
+  MISSING_PASSWORD_DATA: "Falta password actual o nuevo",
+  TOKEN_REFRESHED: "Token renovado",
+} as const;
+
+const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+} as const;
+
 // crear usuario nuevo
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { email, password, firstName, lastName, phoneNumber, role } = req.body;
@@ -11,7 +37,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   // verificar si ya existe el mail
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw createError("El email ya esta en uso", 409);
+    throw createError(MESSAGES.USER_EXISTS, HTTP_STATUS.CONFLICT);
   }
 
   // crear usuario nuevo
@@ -28,7 +54,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   const response: ApiResponse = {
     success: true,
-    message: "Usuario creado",
+    message: MESSAGES.USER_CREATED,
     data: {
       user: {
         id: user._id,
@@ -50,21 +76,21 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    throw createError("Falta email o password", 400);
+    throw createError(MESSAGES.MISSING_CREDENTIALS, HTTP_STATUS.BAD_REQUEST);
   }
 
   // buscar usuario activo
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.comparePassword(password))) {
-    throw createError("Email o password incorrecto", 401);
+    throw createError(MESSAGES.INVALID_CREDENTIALS, HTTP_STATUS.UNAUTHORIZED);
   }
 
   const token = generateToken(user._id!.toString(), user.email);
 
   const response: ApiResponse = {
     success: true,
-    message: "Login ok",
+    message: MESSAGES.LOGIN_SUCCESS,
     data: {
       user: {
         id: user._id,
@@ -85,17 +111,17 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 export const getProfile = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     if (!req.user) {
-      throw createError("No estas logueado", 401);
+      throw createError(MESSAGES.NOT_AUTHENTICATED, HTTP_STATUS.UNAUTHORIZED);
     }
 
     const user = await User.findById(req.user._id);
     if (!user) {
-      throw createError("Usuario no encontrado", 404);
+      throw createError(MESSAGES.USER_NOT_FOUND, HTTP_STATUS.NOT_FOUND);
     }
 
     const response: ApiResponse = {
       success: true,
-      message: "Perfil encontrado",
+      message: MESSAGES.PROFILE_FOUND,
       data: {
         user: {
           id: user._id,
@@ -118,7 +144,7 @@ export const getProfile = asyncHandler(
 export const updateProfile = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     if (!req.user) {
-      throw createError("No estas logueado", 401);
+      throw createError(MESSAGES.NOT_AUTHENTICATED, HTTP_STATUS.UNAUTHORIZED);
     }
 
     const { firstName, lastName, phoneNumber } = req.body;
@@ -130,12 +156,12 @@ export const updateProfile = asyncHandler(
     );
 
     if (!user) {
-      throw createError("Usuario no encontrado", 404);
+      throw createError(MESSAGES.USER_NOT_FOUND, HTTP_STATUS.NOT_FOUND);
     }
 
     const response: ApiResponse = {
       success: true,
-      message: "Perfil actualizado",
+      message: MESSAGES.PROFILE_UPDATED,
       data: {
         user: {
           id: user._id,
@@ -157,23 +183,23 @@ export const updateProfile = asyncHandler(
 export const changePassword = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     if (!req.user) {
-      throw createError("No estas logueado", 401);
+      throw createError(MESSAGES.NOT_AUTHENTICATED, HTTP_STATUS.UNAUTHORIZED);
     }
 
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      throw createError("Falta password actual o nuevo", 400);
+      throw createError(MESSAGES.MISSING_PASSWORD_DATA, HTTP_STATUS.BAD_REQUEST);
     }
 
     const user = await User.findById(req.user._id).select("+password");
     if (!user) {
-      throw createError("Usuario no encontrado", 404);
+      throw createError(MESSAGES.USER_NOT_FOUND, HTTP_STATUS.NOT_FOUND);
     }
 
     const isCurrentPasswordValid = await user.comparePassword(currentPassword);
     if (!isCurrentPasswordValid) {
-      throw createError("Password actual incorrecto", 400);
+      throw createError(MESSAGES.INVALID_CURRENT_PASSWORD, HTTP_STATUS.BAD_REQUEST);
     }
 
     user.password = newPassword;
@@ -181,7 +207,7 @@ export const changePassword = asyncHandler(
 
     const response: ApiResponse = {
       success: true,
-      message: "Password cambiado",
+      message: MESSAGES.PASSWORD_CHANGED,
     };
 
     res.json(response);
@@ -192,14 +218,14 @@ export const changePassword = asyncHandler(
 export const refreshToken = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     if (!req.user) {
-      throw createError("No estas logueado", 401);
+      throw createError(MESSAGES.NOT_AUTHENTICATED, HTTP_STATUS.UNAUTHORIZED);
     }
 
     const token = generateToken(req.user._id!.toString(), req.user.email);
 
     const response: ApiResponse = {
       success: true,
-      message: "Token renovado",
+      message: MESSAGES.TOKEN_REFRESHED,
       data: { token },
     };
 
