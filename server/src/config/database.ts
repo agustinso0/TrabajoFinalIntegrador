@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
 
+// constantes de configuracion de MongoDB
+const DEFAULT_MAX_POOL_SIZE = 5;
+const DEFAULT_SERVER_SELECTION_TIMEOUT = 5000;
+const DEFAULT_SOCKET_TIMEOUT = 30000;
+const DEFAULT_COMPANY_NAME = "Sistema de Reservas";
+
 // configuracion de conexion a mongo
 const MONGO_OPTIONS = {
   bufferCommands: false,
-  maxPoolSize: 5,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 30000,
+  maxPoolSize: DEFAULT_MAX_POOL_SIZE,
+  serverSelectionTimeoutMS: DEFAULT_SERVER_SELECTION_TIMEOUT,
+  socketTimeoutMS: DEFAULT_SOCKET_TIMEOUT,
 };
 
 // conectar con mongo
@@ -22,7 +28,7 @@ const connectDB = async (): Promise<void> => {
 
     console.log(`🚀 MongoDB conectado: ${mongoose.connection.host}`);
     console.log(`📁 Base de datos: ${mongoose.connection.name}`);
-    console.log(`🏢 ${process.env.COMPANY_NAME || "Default"}`);
+    console.log(`🏢 ${process.env.COMPANY_NAME || DEFAULT_COMPANY_NAME}`);
 
     // eventos de conexion
     mongoose.connection.on("error", (err) => {
