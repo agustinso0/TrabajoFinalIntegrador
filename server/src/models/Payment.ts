@@ -30,7 +30,7 @@ const PaymentSchema = new Schema(
       required: true,
       default: "ARS",
       uppercase: true,
-      match: [/^[A-Z]{3}$/, "Codigo de moneda invalido"],
+      match: [/^[A-Z]{3}$/, "Moneda debe ser codigo de 3 letras"],
     },
     status: {
       type: String,

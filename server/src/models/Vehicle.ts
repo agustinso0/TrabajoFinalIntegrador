@@ -22,7 +22,7 @@ const VehicleSchema = new Schema<IVehicleDocument>(
       unique: true,
       uppercase: true,
       trim: true,
-      match: [/^[A-Z]{2,3}[\d]{3}[A-Z]{0,2}$/, "Formato de patente invalido"],
+      match: [/^[A-Z]{2,3}[\d]{3}[A-Z]{0,2}$/, "La patente no tiene formato valido"],
     },
     brand: {
       type: String,
