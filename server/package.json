@@ -11,7 +11,7 @@
     "test": "jest",
     "build": "tsc",
     "postinstall": "tsc --init",
-    "migrate": "npm run build && node dist/database/migrate.js",
+    "migrate": "npm run build && node dist/database/migrate.js"
   },
   "keywords": [],
   "author": "",
