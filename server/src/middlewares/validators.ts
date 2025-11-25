@@ -26,7 +26,7 @@ export const handleValidationErrors = (
   next();
 };
 
-// validar cuando se registra
+// validacion para registro de usuario
 export const validateRegister = [
   body("email").isEmail().normalizeEmail().withMessage("Email debe ser valido"),
 
@@ -56,7 +56,7 @@ export const validateRegister = [
   handleValidationErrors,
 ];
 
-// para login
+// validacion para login
 export const validateLogin = [
   body("email").isEmail().normalizeEmail().withMessage("Email debe ser valido"),
 
