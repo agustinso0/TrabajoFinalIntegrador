@@ -16,7 +16,7 @@ export const handleValidationErrors = (
 
     const response: ApiResponse = {
       success: false,
-      message: "Datos incorretos",
+      message: "Datos incorrectos",
       error: errorMessages.join(", "),
     };
 
