@@ -3,13 +3,14 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { AuthenticatedRequest, ApiResponse } from "../types";
 
-// verificar si el usuario tiene token valido
+// middleware para verificar JWT y cargar usuario
 export const authenticateToken = async (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    // extraer token del header
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(" ")[1];
 
