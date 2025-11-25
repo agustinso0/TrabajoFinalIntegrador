@@ -283,4 +283,3 @@ router.put(
 router.post("/refresh-token", authenticateToken, refreshToken);
 
 export default router;
-
