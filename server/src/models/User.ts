@@ -17,13 +17,13 @@ const UserSchema = new Schema<IUserDocument>(
       trim: true,
       match: [
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.[a-zA-Z]{2,3})+$/,
-        "Email invalido",
+        "Formato de email invalido",
       ],
     },
     password: {
       type: String,
       required: [true, "La contrasena es requerida"],
-      minlength: [6, "La contrasena debe tener al menos 6 caracteres"],
+      minlength: [6, "Minimo 6 caracteres para la contrasena"],
       select: false,
     },
     firstName: {
