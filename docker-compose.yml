@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # 1. Backend Service (Node.js/Express)
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: ${PROJECT_NAME}_backend
+    env_file:
+      - ./.env 
+    depends_on:
+      - database
+      
+    # Define ambos perfiles: dev y prod
+    profiles: 
+      - dev
+      - prod
+      
+    # Puertos y Volúmenes (configuración compartida)
+    # Los puertos y comandos varían según el perfil al ejecutar 'docker compose --profile <name>'
+    ports:
+      - "3001:3001" # Puerto de testing/desarrollo directo
+      - "80:3001"   # Puerto de producción (solo activo en el perfil 'prod')
+
+    volumes:
+      # Mapea solo el código fuente para Hot Reload en desarrollo
+      - ./server/src:/app/src 
+      - ./server/package.json:/app/package.json
+      - /app/node_modules # Volumen anónimo para preservar node_modules
+    
+    # Comando de desarrollo: usa 'npm run dev' (nodemon/ts-node)
+    command: npm run dev 
+    restart: always
+
+  # 2. Frontend Service (React/Vite)
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: ${PROJECT_NAME}_frontend
+    
+    # Configura la URL del backend usando el nombre del servicio Docker
+    environment:
+      VITE_API_URL: http://${PROJECT_NAME}_backend:3001/api/v1 
+    
+    # Define ambos perfiles: dev y prod
+    profiles: 
+      - dev
+      - prod
+      
+    ports:
+      - "5173:5173" # Puerto de desarrollo/HMR
+      - "80:80"   # Puerto de producción (Nginx)
+
+    volumes:
+      # Mapea la carpeta client entera para HMR en desarrollo
+      - ./client:/app
+      - /app/node_modules
+    
+    # Comando de desarrollo: usa 'npm run dev' (Vite)
+    command: npm run dev 
+    restart: always
+
+  # 3. Database Service (MongoDB - Solo para desarrollo local)
+  database:
+    image: mongo:6.0 # Versión probada
+    container_name: ${PROJECT_NAME}_db
+    ports:
+      - "27017:27017" # Puerto de acceso a DB (solo para desarrollo/visualización)
+    volumes:
+      - mongodb_data:/data/db 
+    
+    # Solo necesario en desarrollo si no se usa MongoDB Atlas
+    profiles: ["dev"] 
+
+volumes:
+  mongodb_data:
