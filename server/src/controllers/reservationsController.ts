@@ -52,8 +52,8 @@ export const createReservation = asyncHandler(
       throw createError("Ya tienes una reserva para esta ruta", 409);
     }
 
-    // crear la reserva
-    const reservation = await Reservation.create({
+    // crear la reserva nueva
+    const newReservation = await Reservation.create({
       routeInstanceId,
       passengerId: req.user._id,
       totalAmount: routeInstance.currentPrice,
@@ -64,7 +64,7 @@ export const createReservation = asyncHandler(
     });
 
     // traer todos los datos para mostrar
-    const populatedReservation = await Reservation.findById(reservation._id)
+    const populatedReservation = await Reservation.findById(newReservation._id)
       .populate({
         path: "routeInstanceId",
         populate: {
