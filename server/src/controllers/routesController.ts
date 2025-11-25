@@ -20,6 +20,8 @@ export const getAvailableRoutes = asyncHandler(
     }
 
     const searchDate = new Date(date as string);
+    
+    // validar que la fecha sea valida
     if (isNaN(searchDate.getTime())) {
       throw createError("Formato de fecha invalido", 400);
     }
