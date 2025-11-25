@@ -2,6 +2,13 @@ import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcryptjs";
 import { IUser } from "../types";
 
+// constantes de validación
+const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.[a-zA-Z]{2,3})+$/;
+const PHONE_REGEX = /^\+?[\d\s-()]{10,15}$/;
+const MIN_PASSWORD_LENGTH = 6;
+const MAX_NAME_LENGTH = 50;
+const BCRYPT_SALT_ROUNDS = 10;
+
 // interface para documento de usuario
 export interface IUserDocument extends Omit<IUser, "_id">, Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -16,33 +23,33 @@ const UserSchema = new Schema<IUserDocument>(
       lowercase: true,
       trim: true,
       match: [
-        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.[a-zA-Z]{2,3})+$/,
-        "Formato de email invalido",
+        EMAIL_REGEX,
+        "Formato de email invalido. Debe ser un email válido (ej: usuario@ejemplo.com)",
       ],
     },
     password: {
       type: String,
       required: [true, "La contrasena es requerida"],
-      minlength: [6, "Minimo 6 caracteres para la contrasena"],
+      minlength: [MIN_PASSWORD_LENGTH, `La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres`],
       select: false,
     },
     firstName: {
       type: String,
       required: [true, "El nombre es requerido"],
       trim: true,
-      maxlength: [50, "El nombre no puede exceder 50 caracteres"],
+      maxlength: [MAX_NAME_LENGTH, `El nombre no puede exceder ${MAX_NAME_LENGTH} caracteres`],
     },
     lastName: {
       type: String,
       required: [true, "El apellido es requerido"],
       trim: true,
-      maxlength: [50, "El apellido no puede exceder 50 caracteres"],
+      maxlength: [MAX_NAME_LENGTH, `El apellido no puede exceder ${MAX_NAME_LENGTH} caracteres`],
     },
     phoneNumber: {
       type: String,
       required: [true, "El numero de telefono es requerido"],
       trim: true,
-      match: [/^\+?[\d\s-()]{10,15}$/, "Numero de telefono invalido"],
+      match: [PHONE_REGEX, "Numero de telefono invalido. Debe tener entre 10 y 15 dígitos"],
     },
     role: {
       type: String,
@@ -75,7 +82,7 @@ UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   try {
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(BCRYPT_SALT_ROUNDS);
     this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
