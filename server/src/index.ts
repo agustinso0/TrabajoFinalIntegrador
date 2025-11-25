@@ -2,10 +2,12 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
 import connectDB, { disconnectDB } from "./config/database.js";
 import { corsConfig } from "./config/security.js";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 import { apiKeyMiddleware } from "./middlewares/apiKey.js";
+import swaggerSpec from "./config/swagger.js";
 import {
   generalLimiter,
   sanitizeInput,
@@ -38,6 +40,17 @@ app.use(
       },
     },
     crossOriginEmbedderPolicy: false,
+  })
+);
+
+// documentacion de la API con Swagger
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "API Transporte - Documentación",
   })
 );
 
