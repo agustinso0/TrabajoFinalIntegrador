@@ -26,7 +26,9 @@ import { CompanyConfigService } from "./services/CompanyConfigService.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001; // puerto por default 3001
+
+// puerto del servidor (3001 por defecto si no esta en .env)
+const PORT = process.env.PORT || 3001;
 
 // config de seguridad basica
 app.use(
