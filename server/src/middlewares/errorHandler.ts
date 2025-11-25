@@ -53,14 +53,15 @@ export const errorHandler = (
   // cuando algo ya existe (duplicado)
   if (error.name === "MongoServerError" && (error as any).code === 11000) {
     statusCode = 409;
-    message = "Ya existe";
+    message = "Registro duplicado";
 
-    const field = Object.keys((error as any).keyValue)[0];
+    const duplicatedField = Object.keys((error as any).keyValue)[0];
+    const duplicatedValue = (error as any).keyValue[duplicatedField];
 
     return res.status(statusCode).json({
       success: false,
       message,
-      error: `Ya existe un registro con ese ${field}`,
+      error: `El ${duplicatedField} '${duplicatedValue}' ya existe`,
     });
   }
 
