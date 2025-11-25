@@ -1,5 +1,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+// constantes de validación
+const MAX_COMPANY_NAME_LENGTH = 100;
+
+/**
+ * Interface que define la estructura de la configuracion de la empresa
+ */
 export interface ICompanyConfig extends Document {
   _id: mongoose.Types.ObjectId;
 
@@ -14,7 +20,7 @@ export interface ICompanyConfig extends Document {
   createdAt: Date;
   updatedAt: Date;
 
-  // metodos
+  // metodos de instancia
   getPublicInfo(): any;
 }
 
@@ -24,11 +30,11 @@ const CompanyConfigSchema = new Schema<ICompanyConfig>(
       type: String,
       required: [true, "El nombre de la empresa es requerido"],
       trim: true,
-      maxlength: [100, "El nombre no puede exceder 100 caracteres"],
+      maxlength: [MAX_COMPANY_NAME_LENGTH, `El nombre no puede exceder ${MAX_COMPANY_NAME_LENGTH} caracteres`],
     },
     email: {
       type: String,
-      required: [true, "El email es requerido"],
+      required: [true, "El email de la empresa es requerido"],
       trim: true,
     },
     phone: {
@@ -50,12 +56,18 @@ const CompanyConfigSchema = new Schema<ICompanyConfig>(
   }
 );
 
-// traer la config que esta activa
+/**
+ * Metodo estatico para obtener la configuracion activa de la empresa
+ * @returns La configuracion activa o null si no existe
+ */
 CompanyConfigSchema.statics.getActiveConfig = async function () {
   return await this.findOne({ isActive: true });
 };
 
-// solo la info que puede ver cualquiera
+/**
+ * Metodo de instancia para obtener informacion publica de la empresa
+ * @returns Objeto con la informacion visible publicamente
+ */
 CompanyConfigSchema.methods.getPublicInfo = function () {
   return {
     companyName: this.companyName,
@@ -65,6 +77,9 @@ CompanyConfigSchema.methods.getPublicInfo = function () {
   };
 };
 
+/**
+ * Interface que extiende el modelo con metodos estaticos personalizados
+ */
 interface ICompanyConfigModel extends Model<ICompanyConfig> {
   getActiveConfig(): Promise<ICompanyConfig | null>;
 }
