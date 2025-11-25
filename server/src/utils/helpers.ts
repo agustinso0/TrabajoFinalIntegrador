@@ -111,6 +111,7 @@ export const parseQueryFloat = (
   return isNaN(parsed) ? defaultValue : parsed;
 };
 
+// parsear fecha de query string
 export const parseQueryDate = (value: any): Date | null => {
   if (!value) return null;
   const date = new Date(value);
