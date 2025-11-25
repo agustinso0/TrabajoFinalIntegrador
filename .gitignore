@@ -46,3 +46,11 @@ db-backup/
 
 # Archivos de estado de Docker Compose
 .docker-compose-state/
+docker-compose.dev.yml
+docker-compose.yml
+docker-manager.ps1
+docker-manager.shDockerfile
+Dockerfile.dev
+nginx.conf
+docker-manager.sh
+.env_jeje
