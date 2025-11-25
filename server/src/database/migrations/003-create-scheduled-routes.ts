@@ -1,5 +1,4 @@
 // Migracion 003: Rutas principales del servicio
-// Estas son las rutas que mas vendemos segun historial
 import ScheduledRoute from "../../models/ScheduledRoute.js";
 
 export const up = async () => {
