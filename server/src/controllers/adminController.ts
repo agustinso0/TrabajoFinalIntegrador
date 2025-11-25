@@ -113,11 +113,12 @@ export const getSystemStatus = asyncHandler(
   async (req: Request, res: Response) => {
     const now = new Date();
 
-    // hardcodeado pero funciona
+    // info basica del sistema
     const systemStatus = {
       timestamp: now.toISOString(),
       status: "operational",
       database: "connected",
+      uptime: process.uptime(),
       services: {
         authentication: "active",
         reservations: "active",
@@ -127,7 +128,7 @@ export const getSystemStatus = asyncHandler(
 
     const response: ApiResponse = {
       success: true,
-      message: "Todo funcionando bien",
+      message: "Estado del sistema OK",
       data: systemStatus,
     };
 
