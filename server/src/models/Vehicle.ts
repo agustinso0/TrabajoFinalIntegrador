@@ -1,5 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+// Constantes de validación para vehículos
+const LICENSE_PLATE_REGEX = /^[A-Z]{2,3}[\d]{3}[A-Z]{0,2}$/;
+const MAX_BRAND_LENGTH = 50;
+const MAX_MODEL_LENGTH = 50;
+const MIN_YEAR = 1990;
+const MIN_CAPACITY = 1;
+const MAX_CAPACITY = 60;
+
 // interface para vehiculos
 export interface IVehicleDocument extends Document {
   licensePlate: string;
@@ -22,31 +30,31 @@ const VehicleSchema = new Schema<IVehicleDocument>(
       unique: true,
       uppercase: true,
       trim: true,
-      match: [/^[A-Z]{2,3}[\d]{3}[A-Z]{0,2}$/, "La patente no tiene formato valido"],
+      match: [LICENSE_PLATE_REGEX, "La patente no tiene formato valido. Debe ser formato argentino (ej: ABC123 o AB123CD)"],
     },
     brand: {
       type: String,
       required: [true, "La marca es requerida"],
       trim: true,
-      maxlength: [50, "La marca no puede exceder 50 caracteres"],
+      maxlength: [MAX_BRAND_LENGTH, `La marca no puede exceder ${MAX_BRAND_LENGTH} caracteres`],
     },
     vehicleModel: {
       type: String,
       required: [true, "El modelo es requerido"],
       trim: true,
-      maxlength: [50, "El modelo no puede exceder 50 caracteres"],
+      maxlength: [MAX_MODEL_LENGTH, `El modelo no puede exceder ${MAX_MODEL_LENGTH} caracteres`],
     },
     year: {
       type: Number,
       required: [true, "El ano es requerido"],
-      min: [1990, "El ano debe ser posterior a 1990"],
+      min: [MIN_YEAR, `El ano debe ser posterior a ${MIN_YEAR}`],
       max: [new Date().getFullYear() + 1, "El ano no puede ser futuro"],
     },
     capacity: {
       type: Number,
       required: [true, "La capacidad es requerida"],
-      min: [1, "La capacidad debe ser al menos 1"],
-      max: [60, "La capacidad no puede exceder 60 pasajeros"],
+      min: [MIN_CAPACITY, `La capacidad debe ser al menos ${MIN_CAPACITY} pasajero`],
+      max: [MAX_CAPACITY, `La capacidad no puede exceder ${MAX_CAPACITY} pasajeros`],
     },
     features: [
       {
