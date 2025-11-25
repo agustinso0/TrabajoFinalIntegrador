@@ -5,6 +5,9 @@ import RouteInstance from "../models/RouteInstance.js";
 import Payment from "../models/Payment.js";
 import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 
+// tiempo minimo para cancelar una reserva (en horas)
+const MIN_HOURS_TO_CANCEL = 2;
+
 // crear nueva reserva
 export const createReservation = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -224,13 +227,14 @@ export const cancelReservation = asyncHandler(
       const [hours, minutes] = routeInstance.departureTime.split(":");
       departureDateTime.setHours(parseInt(hours), parseInt(minutes));
 
-      const twoHoursBefore = new Date(
-        departureDateTime.getTime() - 2 * 60 * 60 * 1000
+      const hoursInMilliseconds = MIN_HOURS_TO_CANCEL * 60 * 60 * 1000;
+      const minTimeToCancelBeforeDeparture = new Date(
+        departureDateTime.getTime() - hoursInMilliseconds
       );
 
-      if (new Date() >= twoHoursBefore && req.user?.role === "passenger") {
+      if (new Date() >= minTimeToCancelBeforeDeparture && req.user?.role === "passenger") {
         throw createError(
-          "No se puede cancelar con menos de 2 horas de anticipación",
+          `No se puede cancelar con menos de ${MIN_HOURS_TO_CANCEL} horas de anticipación`,
           400
         );
       }
