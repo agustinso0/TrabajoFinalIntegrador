@@ -3,6 +3,23 @@ import { body, param, query, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { ApiResponse } from "../types";
 
+// constantes de validación
+const MIN_PASSWORD_LENGTH = 6;
+const MAX_PASSWORD_LENGTH = 100;
+const MIN_NAME_LENGTH = 2;
+const MAX_NAME_LENGTH = 50;
+const MIN_LOCATION_LENGTH = 2;
+const MAX_LOCATION_LENGTH = 100;
+const MIN_SEAT_NUMBER = 1;
+const MAX_SEAT_NUMBER = 100;
+const MAX_NOTES_LENGTH = 500;
+const MIN_PAGE = 1;
+const MAX_LIMIT = 100;
+const MAX_SEARCH_LIMIT = 50;
+const MIN_AMOUNT = 0.01;
+const PHONE_REGEX = /^\+?[\d\s\-\(\)]{10,15}$/;
+const MONGODB_ID_REGEX = /^[0-9a-fA-F]{24}$/;
+
 // procesar errores de validacion y enviar respuesta
 export const handleValidationErrors = (
   req: Request,
@@ -28,25 +45,25 @@ export const handleValidationErrors = (
 
 // validacion para registro de usuario
 export const validateRegister = [
-  body("email").isEmail().normalizeEmail().withMessage("Email debe ser valido"),
+  body("email").isEmail().normalizeEmail().withMessage("Email debe ser válido y tener formato correcto"),
 
   body("password")
-    .isLength({ min: 6, max: 100 })
-    .withMessage("Password debe tener entre 6 y 100 caracteres"),
+    .isLength({ min: MIN_PASSWORD_LENGTH, max: MAX_PASSWORD_LENGTH })
+    .withMessage(`Password debe tener entre ${MIN_PASSWORD_LENGTH} y ${MAX_PASSWORD_LENGTH} caracteres`),
 
   body("firstName")
     .trim()
-    .isLength({ min: 2, max: 50 })
-    .withMessage("Nombre debe tener entre 2-50 caracteres"),
+    .isLength({ min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH })
+    .withMessage(`Nombre debe tener entre ${MIN_NAME_LENGTH} y ${MAX_NAME_LENGTH} caracteres`),
 
   body("lastName")
     .trim()
-    .isLength({ min: 2, max: 50 })
-    .withMessage("Apellido debe tener entre 2-50 caracteres"),
+    .isLength({ min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH })
+    .withMessage(`Apellido debe tener entre ${MIN_NAME_LENGTH} y ${MAX_NAME_LENGTH} caracteres`),
 
   body("phoneNumber")
-    .matches(/^\+?[\d\s\-\(\)]{10,15}$/)
-    .withMessage("Telefono debe ser valido"),
+    .matches(PHONE_REGEX)
+    .withMessage("Teléfono debe ser válido y tener entre 10 y 15 dígitos"),
 
   body("role")
     .optional()
@@ -58,9 +75,9 @@ export const validateRegister = [
 
 // validacion para login
 export const validateLogin = [
-  body("email").isEmail().normalizeEmail().withMessage("Email debe ser valido"),
+  body("email").isEmail().normalizeEmail().withMessage("Email debe ser válido y tener formato correcto"),
 
-  body("password").notEmpty().withMessage("Password es requerido"),
+  body("password").notEmpty().withMessage("Password es requerido y no puede estar vacío"),
 
   handleValidationErrors,
 ];
@@ -70,19 +87,19 @@ export const validateUpdateProfile = [
   body("firstName")
     .optional()
     .trim()
-    .isLength({ min: 2, max: 50 })
-    .withMessage("Nombre debe tener entre 2-50 caracteres"),
+    .isLength({ min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH })
+    .withMessage(`Nombre debe tener entre ${MIN_NAME_LENGTH} y ${MAX_NAME_LENGTH} caracteres`),
 
   body("lastName")
     .optional()
     .trim()
-    .isLength({ min: 2, max: 50 })
-    .withMessage("Apellido debe tener entre 2-50 caracteres"),
+    .isLength({ min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH })
+    .withMessage(`Apellido debe tener entre ${MIN_NAME_LENGTH} y ${MAX_NAME_LENGTH} caracteres`),
 
   body("phoneNumber")
     .optional()
-    .matches(/^\+?[\d\s\-\(\)]{10,15}$/)
-    .withMessage("Telefono debe ser valido"),
+    .matches(PHONE_REGEX)
+    .withMessage("Teléfono debe ser válido y tener entre 10 y 15 dígitos"),
 
   handleValidationErrors,
 ];
@@ -91,11 +108,11 @@ export const validateUpdateProfile = [
 export const validateChangePassword = [
   body("currentPassword")
     .notEmpty()
-    .withMessage("Password actual es requerido"),
+    .withMessage("Password actual es requerido y no puede estar vacío"),
 
   body("newPassword")
-    .isLength({ min: 6, max: 100 })
-    .withMessage("Nuevo password debe tener entre 6 y 100 caracteres"),
+    .isLength({ min: MIN_PASSWORD_LENGTH, max: MAX_PASSWORD_LENGTH })
+    .withMessage(`Nuevo password debe tener entre ${MIN_PASSWORD_LENGTH} y ${MAX_PASSWORD_LENGTH} caracteres`),
 
   handleValidationErrors,
 ];
@@ -103,19 +120,19 @@ export const validateChangePassword = [
 // crear reserva nueva
 export const validateCreateReservation = [
   body("routeInstanceId")
-    .matches(/^[0-9a-fA-F]{24}$/)
-    .withMessage("ID de ruta debe ser valido"),
+    .matches(MONGODB_ID_REGEX)
+    .withMessage("ID de ruta debe ser un ObjectId válido de MongoDB"),
 
   body("seatNumber")
     .optional()
-    .isInt({ min: 1, max: 100 })
-    .withMessage("Numero de asiento debe ser entre 1 y 100"),
+    .isInt({ min: MIN_SEAT_NUMBER, max: MAX_SEAT_NUMBER })
+    .withMessage(`Numero de asiento debe estar entre ${MIN_SEAT_NUMBER} y ${MAX_SEAT_NUMBER}`),
 
   body("specialRequests")
     .optional()
     .trim()
-    .isLength({ max: 500 })
-    .withMessage("Solicitudes especiales no pueden exceder 500 caracteres"),
+    .isLength({ max: MAX_NOTES_LENGTH })
+    .withMessage(`Solicitudes especiales no pueden exceder ${MAX_NOTES_LENGTH} caracteres`),
 
   body("paymentMethod")
     .isIn(["cash", "manual"])
@@ -129,29 +146,29 @@ export const validateRouteSearch = [
   query("date")
     .optional()
     .isISO8601()
-    .withMessage("Fecha debe ser valida (YYYY-MM-DD)"),
+    .withMessage("Fecha debe ser válida en formato ISO8601 (YYYY-MM-DD)"),
 
   query("origin")
     .optional()
     .trim()
-    .isLength({ min: 2, max: 100 })
-    .withMessage("Origen debe tener entre 2 y 100 caracteres"),
+    .isLength({ min: MIN_LOCATION_LENGTH, max: MAX_LOCATION_LENGTH })
+    .withMessage(`Origen debe tener entre ${MIN_LOCATION_LENGTH} y ${MAX_LOCATION_LENGTH} caracteres`),
 
   query("destination")
     .optional()
     .trim()
-    .isLength({ min: 2, max: 100 })
-    .withMessage("Destino debe tener entre 2 y 100 caracteres"),
+    .isLength({ min: MIN_LOCATION_LENGTH, max: MAX_LOCATION_LENGTH })
+    .withMessage(`Destino debe tener entre ${MIN_LOCATION_LENGTH} y ${MAX_LOCATION_LENGTH} caracteres`),
 
   query("page")
     .optional()
-    .isInt({ min: 1 })
-    .withMessage("Pagina debe ser un numero mayor a 0"),
+    .isInt({ min: MIN_PAGE })
+    .withMessage(`Página debe ser un número mayor o igual a ${MIN_PAGE}`),
 
   query("limit")
     .optional()
-    .isInt({ min: 1, max: 50 })
-    .withMessage("Limite debe ser entre 1 y 50"),
+    .isInt({ min: MIN_PAGE, max: MAX_SEARCH_LIMIT })
+    .withMessage(`Límite debe estar entre ${MIN_PAGE} y ${MAX_SEARCH_LIMIT}`),
 
   handleValidationErrors,
 ];
@@ -159,16 +176,16 @@ export const validateRouteSearch = [
 // crear pago
 export const validateCreatePayment = [
   body("reservationId")
-    .matches(/^[0-9a-fA-F]{24}$/)
-    .withMessage("ID de reserva debe ser valido"),
+    .matches(MONGODB_ID_REGEX)
+    .withMessage("ID de reserva debe ser un ObjectId válido de MongoDB"),
 
-  body("amount").isFloat({ min: 0.01 }).withMessage("Monto debe ser mayor a 0"),
+  body("amount").isFloat({ min: MIN_AMOUNT }).withMessage(`Monto debe ser mayor a ${MIN_AMOUNT}`),
 
   body("notes")
     .optional()
     .trim()
-    .isLength({ max: 500 })
-    .withMessage("Notas no pueden exceder 500 caracteres"),
+    .isLength({ max: MAX_NOTES_LENGTH })
+    .withMessage(`Notas no pueden exceder ${MAX_NOTES_LENGTH} caracteres`),
 
   handleValidationErrors,
 ];
@@ -177,13 +194,13 @@ export const validateCreatePayment = [
 export const validateUpdatePaymentStatus = [
   body("status")
     .isIn(["pending", "approved", "rejected", "cancelled"])
-    .withMessage("Estado debe ser pending, approved, rejected o cancelled"),
+    .withMessage("Estado debe ser uno de: pending, approved, rejected, cancelled"),
 
   body("notes")
     .optional()
     .trim()
-    .isLength({ max: 500 })
-    .withMessage("Notas no pueden exceder 500 caracteres"),
+    .isLength({ max: MAX_NOTES_LENGTH })
+    .withMessage(`Notas no pueden exceder ${MAX_NOTES_LENGTH} caracteres`),
 
   handleValidationErrors,
 ];
@@ -191,8 +208,8 @@ export const validateUpdatePaymentStatus = [
 // validar IDs de mongo
 export const validateObjectIdParam = (paramName: string = "id") => [
   param(paramName)
-    .matches(/^[0-9a-fA-F]{24}$/)
-    .withMessage(`${paramName} debe ser un ID valido`),
+    .matches(MONGODB_ID_REGEX)
+    .withMessage(`${paramName} debe ser un ObjectId válido de MongoDB (24 caracteres hexadecimales)`),
 
   handleValidationErrors,
 ];
@@ -201,13 +218,13 @@ export const validateObjectIdParam = (paramName: string = "id") => [
 export const validatePagination = [
   query("page")
     .optional()
-    .isInt({ min: 1 })
-    .withMessage("Pagina debe ser un numero mayor a 0"),
+    .isInt({ min: MIN_PAGE })
+    .withMessage(`Página debe ser un número mayor o igual a ${MIN_PAGE}`),
 
   query("limit")
     .optional()
-    .isInt({ min: 1, max: 100 })
-    .withMessage("Limite debe ser entre 1 y 100"),
+    .isInt({ min: MIN_PAGE, max: MAX_LIMIT })
+    .withMessage(`Límite debe estar entre ${MIN_PAGE} y ${MAX_LIMIT}`),
 
   handleValidationErrors,
 ];
