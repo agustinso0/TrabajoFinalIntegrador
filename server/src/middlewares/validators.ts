@@ -3,7 +3,7 @@ import { body, param, query, validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { ApiResponse } from "../types";
 
-// manejar cuando hay errores de validacion
+// procesar errores de validacion y enviar respuesta
 export const handleValidationErrors = (
   req: Request,
   res: Response,
