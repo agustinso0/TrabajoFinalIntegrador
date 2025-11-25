@@ -233,7 +233,10 @@ export const cancelReservation = asyncHandler(
         departureDateTime.getTime() - hoursInMilliseconds
       );
 
-      if (new Date() >= minTimeToCancelBeforeDeparture && req.user?.role === "passenger") {
+      if (
+        new Date() >= minTimeToCancelBeforeDeparture &&
+        req.user?.role === "passenger"
+      ) {
         throw createError(
           `No se puede cancelar con menos de ${MIN_HOURS_TO_CANCEL} horas de anticipación`,
           400

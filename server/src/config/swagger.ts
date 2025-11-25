@@ -23,7 +23,7 @@ const swaggerDefinition: SwaggerDefinition = {
     {
       url: "http://localhost:3001/api/v1",
       description: "Servidor de desarrollo local",
-    }
+    },
   ],
   components: {
     securitySchemes: {
@@ -174,7 +174,13 @@ const swaggerDefinition: SwaggerDefinition = {
           },
           status: {
             type: "string",
-            enum: ["scheduled", "boarding", "in_transit", "completed", "cancelled"],
+            enum: [
+              "scheduled",
+              "boarding",
+              "in_transit",
+              "completed",
+              "cancelled",
+            ],
             description: "Estado actual del viaje",
           },
           currentPrice: {
@@ -262,7 +268,8 @@ const swaggerDefinition: SwaggerDefinition = {
   tags: [
     {
       name: "Autenticación",
-      description: "Operaciones relacionadas con el registro y autenticación de usuarios",
+      description:
+        "Operaciones relacionadas con el registro y autenticación de usuarios",
     },
     {
       name: "Rutas",
@@ -289,11 +296,7 @@ const swaggerDefinition: SwaggerDefinition = {
 
 const options: swaggerJsdoc.Options = {
   definition: swaggerDefinition,
-  apis: [
-    "./src/routes/*.ts",
-    "./src/controllers/*.ts",
-    "./src/models/*.ts",
-  ],
+  apis: ["./src/routes/*.ts", "./src/controllers/*.ts", "./src/models/*.ts"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

@@ -13,14 +13,20 @@ const DEFAULT_LIMIT = 10;
 // buscar rutas disponibles
 export const getAvailableRoutes = asyncHandler(
   async (req: Request, res: Response) => {
-    const { date, origin, destination, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = req.query;
+    const {
+      date,
+      origin,
+      destination,
+      page = DEFAULT_PAGE,
+      limit = DEFAULT_LIMIT,
+    } = req.query;
 
     if (!date) {
       throw createError("La fecha es requerida", 400);
     }
 
     const searchDate = new Date(date as string);
-    
+
     // validar que la fecha sea valida
     if (isNaN(searchDate.getTime())) {
       throw createError("Formato de fecha invalido", 400);

@@ -4,6 +4,9 @@ import Payment from "../models/Payment.js";
 import Reservation from "../models/Reservation.js";
 import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 
+// metodos de pago permitidos
+const ALLOWED_PAYMENT_METHODS = ["cash", "manual"];
+
 // crear pago manual
 export const createManualPayment = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -17,8 +20,11 @@ export const createManualPayment = asyncHandler(
       throw createError("ID de reserva requerido", 400);
     }
 
-    if (!paymentMethod || !["cash", "manual"].includes(paymentMethod)) {
-      throw createError("Metodo de pago invalido. Debe ser cash o manual", 400);
+    if (!paymentMethod || !ALLOWED_PAYMENT_METHODS.includes(paymentMethod)) {
+      throw createError(
+        `Metodo de pago invalido. Debe ser: ${ALLOWED_PAYMENT_METHODS.join(" o ")}`,
+        400
+      );
     }
 
     // ver que existe la reserva
