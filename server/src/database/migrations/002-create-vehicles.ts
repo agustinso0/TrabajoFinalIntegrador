@@ -1,11 +1,9 @@
 // Migracion 002: Flota inicial de vehiculos
-// Datos de la flota real de la empresa
 import Vehicle from "../../models/Vehicle.js";
 
 export const up = async () => {
   console.log("Cargando flota de vehiculos...");
 
-  // Flota actual de TransporteUNI
   const flotaVehiculos = [
     {
       licensePlate: "AB123CD",
