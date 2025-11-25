@@ -1,0 +1,48 @@
+node_modules/
+dist/
+.env
+.vscode/
+.DS_Store
+coverage/
+*.log
+
+# Docker
+.docker/
+docker-data/
+.dockerignore
+*.dockerfile.backup
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Docker volumes y datos persistentes
+data/
+volumes/
+mongodb-data/
+
+# Logs de Docker
+docker-logs/
+*.docker.log
+
+# Cache de Docker Buildx
+.buildx-cache/
+
+# Archivos temporales de Docker
+.tmp/
+tmp/
+
+# Secrets y configuración sensible de Docker
+docker-secrets/
+.docker-secrets/
+docker.env
+.env.docker
+.env.production.local
+.env.development.local
+
+# Backups de base de datos
+*.sql
+*.dump
+mongodb_backup/
+db-backup/
+
+# Archivos de estado de Docker Compose
+.docker-compose-state/
