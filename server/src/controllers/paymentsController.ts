@@ -10,7 +10,11 @@ const PAYMENT_STATUS_APPROVED = "approved";
 const PAYMENT_STATUS_REJECTED = "rejected";
 const PAYMENT_STATUS_CANCELLED = "cancelled";
 const PAYMENT_STATUS_PENDING = "pending";
-const UPDATABLE_PAYMENT_STATUSES = [PAYMENT_STATUS_APPROVED, PAYMENT_STATUS_REJECTED, PAYMENT_STATUS_CANCELLED];
+const UPDATABLE_PAYMENT_STATUSES = [
+  PAYMENT_STATUS_APPROVED,
+  PAYMENT_STATUS_REJECTED,
+  PAYMENT_STATUS_CANCELLED,
+];
 
 // crear pago manual
 export const createManualPayment = asyncHandler(
@@ -27,7 +31,9 @@ export const createManualPayment = asyncHandler(
 
     if (!paymentMethod || !ALLOWED_PAYMENT_METHODS.includes(paymentMethod)) {
       throw createError(
-        `Metodo de pago invalido. Debe ser: ${ALLOWED_PAYMENT_METHODS.join(" o ")}`,
+        `Metodo de pago invalido. Debe ser: ${ALLOWED_PAYMENT_METHODS.join(
+          " o "
+        )}`,
         400
       );
     }
@@ -76,7 +82,10 @@ export const createManualPayment = asyncHandler(
       paymentMethod,
       amount: reservation.totalAmount,
       currency: "ARS",
-      status: paymentMethod === "cash" ? PAYMENT_STATUS_PENDING : PAYMENT_STATUS_PENDING,
+      status:
+        paymentMethod === "cash"
+          ? PAYMENT_STATUS_PENDING
+          : PAYMENT_STATUS_PENDING,
       notes,
       processedBy: req.user.role !== "passenger" ? req.user._id : undefined,
     });
@@ -145,7 +154,9 @@ export const updatePaymentStatus = asyncHandler(
 
     if (!UPDATABLE_PAYMENT_STATUSES.includes(status)) {
       throw createError(
-        `Estado de pago inválido. Debe ser: ${UPDATABLE_PAYMENT_STATUSES.join(", ")}`,
+        `Estado de pago inválido. Debe ser: ${UPDATABLE_PAYMENT_STATUSES.join(
+          ", "
+        )}`,
         400
       );
     }
