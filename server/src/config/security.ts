@@ -1,11 +1,12 @@
 // configuraciones de seguridad
 
-// CORS - que sitios pueden usar la API
+// CORS - configurar que origenes pueden acceder a la API
 export const corsConfig = {
   origin: (
     origin: string | undefined,
     callback: (err: Error | null, allow?: boolean) => void
   ) => {
+    // lista de origenes permitidos
     const allowedOrigins = [
       "http://localhost:3000",
       "http://localhost:5173",
@@ -13,7 +14,7 @@ export const corsConfig = {
       process.env.FRONTEND_URL,
     ].filter(Boolean);
 
-    // permitir requests sin origin (postman, insomnia, etc)
+    // permitir requests sin origin (herramientas como postman, insomnia, etc)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
