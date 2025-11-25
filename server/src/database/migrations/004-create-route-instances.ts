@@ -45,52 +45,52 @@ export const up = async () => {
       price: 4200,
     },
     {
-      scheduledRouteId: routes[0]._id, // Buenos Aires - Rosario
-      vehicleId: vehicles[1]._id,
-      driverId: drivers[0]._id,
-      departureDate: dayAfterTomorrow,
-      departureTime: "08:00",
-      arrivalTime: "12:00",
+      scheduledRouteId: rutasDisponibles[0]._id,
+      vehicleId: vehiculosActivos[1]._id,
+      driverId: choferes[0]._id,
+      departureDate: pasadoManana,
+      departureTime: "14:00",
+      arrivalTime: "18:00",
       availableSeats: 15,
       status: "scheduled",
-      price: 3500,
+      price: 4200,
     },
     {
-      scheduledRouteId: routes[1]._id, // Buenos Aires - Cordoba
-      vehicleId: vehicles[2]._id,
-      driverId: drivers[0]._id,
-      departureDate: tomorrow,
+      scheduledRouteId: rutasDisponibles[1]._id,
+      vehicleId: vehiculosActivos[2]._id,
+      driverId: choferes[0]._id,
+      departureDate: manana,
       departureTime: "22:00",
       arrivalTime: "06:00",
       availableSeats: 18,
       status: "scheduled",
-      price: 7500,
+      price: 8500,
     },
     {
-      scheduledRouteId: routes[2]._id, // Rosario - Santa Fe
-      vehicleId: vehicles[0]._id,
-      driverId: drivers[0]._id,
-      departureDate: tomorrow,
+      scheduledRouteId: rutasDisponibles[2]._id,
+      vehicleId: vehiculosActivos[0]._id,
+      driverId: choferes[0]._id,
+      departureDate: manana,
       departureTime: "15:30",
       arrivalTime: "17:30",
       availableSeats: 20,
       status: "scheduled",
-      price: 2200,
+      price: 2500,
     },
     {
-      scheduledRouteId: routes[3]._id, // Buenos Aires - Mar del Plata
-      vehicleId: vehicles[1]._id,
-      driverId: drivers[0]._id,
-      departureDate: dayAfterTomorrow,
+      scheduledRouteId: rutasDisponibles[3]._id,
+      vehicleId: vehiculosActivos[1]._id,
+      driverId: choferes[0]._id,
+      departureDate: pasadoManana,
       departureTime: "09:00",
       arrivalTime: "14:00",
       availableSeats: 15,
       status: "scheduled",
-      price: 5200,
+      price: 5800,
     },
   ];
 
-  for (const instanceData of routeInstances) {
+  for (const instanceData of serviciosProgramados) {
     const existingInstance = await RouteInstance.findOne({
       scheduledRouteId: instanceData.scheduledRouteId,
       departureDate: instanceData.departureDate,
@@ -100,29 +100,29 @@ export const up = async () => {
     if (!existingInstance) {
       await RouteInstance.create(instanceData);
       console.log(
-        `Instancia de ruta creada para ${instanceData.departureDate.toDateString()}`
+        `[OK] Servicio programado para ${instanceData.departureDate.toDateString()}`
       );
     } else {
       console.log(
-        `Instancia ya existe para ${instanceData.departureDate.toDateString()}`
+        `[SKIP] Servicio ya existe para ${instanceData.departureDate.toDateString()}`
       );
     }
   }
 
-  console.log("Instancias de rutas de prueba creadas");
+  console.log("Servicios de la semana programados correctamente!");
 };
 
 export const down = async () => {
-  console.log("Eliminando instancias de rutas de prueba...");
+  console.log("Rollback: eliminando servicios programados...");
 
-  // Eliminar instancias de los proximos 3 dias
-  const today = new Date();
-  const futureDate = new Date(today);
-  futureDate.setDate(today.getDate() + 3);
+  // Eliminar servicios de los proximos 3 dias
+  const hoy = new Date();
+  const fechaLimite = new Date(hoy);
+  fechaLimite.setDate(hoy.getDate() + 3);
 
   await RouteInstance.deleteMany({
-    departureDate: { $gte: today, $lte: futureDate },
+    departureDate: { $gte: hoy, $lte: fechaLimite },
   });
 
-  console.log("Instancias de rutas de prueba eliminadas");
+  console.log("[OK] Servicios programados eliminados");
 };
