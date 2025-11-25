@@ -32,6 +32,7 @@ export const corsConfig = {
 export const validationPatterns = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   phone: /^\+?[\d\s\-\(\)]{10,15}$/,
+  dni: /^\d{7,8}$/,
   objectId: /^[0-9a-fA-F]{24}$/,
   time: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
   date: /^\d{4}-\d{2}-\d{2}$/,
