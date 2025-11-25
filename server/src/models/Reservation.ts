@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+// constantes de validación
+const MIN_SEAT_NUMBER = 1;
+const MIN_TOTAL_AMOUNT = 0;
+const MAX_SPECIAL_REQUESTS_LENGTH = 500;
+
 // interface para las reservas
 export interface IReservationDocument extends Document {
   routeInstanceId: string;
@@ -26,7 +31,7 @@ const ReservationSchema = new Schema<IReservationDocument>(
     },
     seatNumber: {
       type: Number,
-      min: [1, "Numero de asiento invalido"],
+      min: [MIN_SEAT_NUMBER, `El número de asiento debe ser al menos ${MIN_SEAT_NUMBER}`],
     },
     status: {
       type: String,
@@ -36,7 +41,7 @@ const ReservationSchema = new Schema<IReservationDocument>(
     totalAmount: {
       type: Number,
       required: [true, "El monto total es requerido"],
-      min: [0, "El monto debe ser positivo"],
+      min: [MIN_TOTAL_AMOUNT, "El monto debe ser positivo o cero"],
     },
     paymentStatus: {
       type: String,
@@ -51,8 +56,8 @@ const ReservationSchema = new Schema<IReservationDocument>(
     specialRequests: {
       type: String,
       maxlength: [
-        500,
-        "Los requerimientos especiales no pueden exceder 500 caracteres",
+        MAX_SPECIAL_REQUESTS_LENGTH,
+        `Los requerimientos especiales no pueden exceder ${MAX_SPECIAL_REQUESTS_LENGTH} caracteres`,
       ],
     },
   },
