@@ -3,9 +3,13 @@ import rateLimit from "express-rate-limit";
 import { Request, Response, NextFunction } from "express";
 import { ApiResponse } from "../types";
 
+// tiempos para rate limiting
+const FIFTEEN_MINUTES = 15 * 60 * 1000;
+const ONE_MINUTE = 60 * 1000;
+
 // rate limiter general para todo
 export const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 min
+  windowMs: FIFTEEN_MINUTES,
   max: 100, // max 100 por IP
   message: {
     success: false,
@@ -16,7 +20,7 @@ export const generalLimiter = rateLimit({
 
 // para login (mas estricto)
 export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 min
+  windowMs: FIFTEEN_MINUTES,
   max: 5, // max 5 intentos
   message: {
     success: false,
@@ -27,7 +31,7 @@ export const authLimiter = rateLimit({
 
 // para crear cosas (evitar spam)
 export const createLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minuto
+  windowMs: ONE_MINUTE,
   max: 5, // maximo 5 por minuto
   message: {
     success: false,
