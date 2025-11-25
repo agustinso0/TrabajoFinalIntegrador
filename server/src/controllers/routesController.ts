@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
+import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 import { AuthenticatedRequest, ApiResponse } from "../types/index.js";
 import RouteInstance from "../models/RouteInstance.js";
 import ScheduledRoute from "../models/ScheduledRoute.js";
 import Vehicle from "../models/Vehicle.js";
 import User from "../models/User.js";
-import { createError, asyncHandler } from "../middlewares/errorHandler.js";
 
 // buscar rutas disponibles
 export const getAvailableRoutes = asyncHandler(
