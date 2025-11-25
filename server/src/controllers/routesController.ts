@@ -6,10 +6,14 @@ import ScheduledRoute from "../models/ScheduledRoute.js";
 import Vehicle from "../models/Vehicle.js";
 import User from "../models/User.js";
 
+// constantes de paginacion
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 10;
+
 // buscar rutas disponibles
 export const getAvailableRoutes = asyncHandler(
   async (req: Request, res: Response) => {
-    const { date, origin, destination, page = 1, limit = 10 } = req.query;
+    const { date, origin, destination, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = req.query;
 
     if (!date) {
       throw createError("La fecha es requerida", 400);
@@ -184,8 +188,8 @@ export const searchRoutes = asyncHandler(
       minPrice,
       maxPrice,
       minSeats,
-      page = 1,
-      limit = 10,
+      page = DEFAULT_PAGE,
+      limit = DEFAULT_LIMIT,
     } = req.query;
 
     const filter: any = { status: "scheduled" };
@@ -310,7 +314,8 @@ export const searchRoutes = asyncHandler(
 // rutas mas populares
 export const getPopularRoutes = asyncHandler(
   async (req: Request, res: Response) => {
-    const { limit = 5 } = req.query;
+    const DEFAULT_POPULAR_LIMIT = 5;
+    const { limit = DEFAULT_POPULAR_LIMIT } = req.query;
 
     const popularRoutes = await RouteInstance.aggregate([
       {
