@@ -26,7 +26,7 @@ const ReservationSchema = new Schema<IReservationDocument>(
     },
     seatNumber: {
       type: Number,
-      min: [1, "El numero de asiento debe ser mayor a 0"],
+      min: [1, "Numero de asiento invalido"],
     },
     status: {
       type: String,
@@ -36,7 +36,7 @@ const ReservationSchema = new Schema<IReservationDocument>(
     totalAmount: {
       type: Number,
       required: [true, "El monto total es requerido"],
-      min: [0, "El monto total debe ser mayor a 0"],
+      min: [0, "El monto debe ser positivo"],
     },
     paymentStatus: {
       type: String,
