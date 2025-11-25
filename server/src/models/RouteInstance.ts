@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+// Constantes de validación
+const TIME_FORMAT_REGEX = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+const MIN_PRICE = 0;
+const MIN_SEATS = 0;
+
 // interface para instancias de viajes
 export interface IRouteInstanceDocument extends Document {
   scheduledRouteId: string;
@@ -38,26 +43,26 @@ const RouteInstanceSchema = new Schema<IRouteInstanceDocument>(
       type: String,
       required: [true, "La hora de partida es requerida"],
       match: [
-        /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
-        "Formato de hora invalido (HH:MM)",
+        TIME_FORMAT_REGEX,
+        "Formato de hora invalido. Debe ser HH:MM (00:00 - 23:59)",
       ],
     },
     arrivalTime: {
       type: String,
       match: [
-        /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
-        "Formato de hora invalido (HH:MM)",
+        TIME_FORMAT_REGEX,
+        "Formato de hora invalido. Debe ser HH:MM (00:00 - 23:59)",
       ],
     },
     currentPrice: {
       type: Number,
       required: [true, "El precio actual es requerido"],
-      min: [0, "El precio debe ser mayor a 0"],
+      min: [MIN_PRICE, "El precio debe ser mayor o igual a cero"],
     },
     availableSeats: {
       type: Number,
       required: [true, "Los asientos disponibles son requeridos"],
-      min: [0, "Los asientos disponibles deben ser mayor o igual a 0"],
+      min: [MIN_SEATS, "Los asientos disponibles no pueden ser negativos"],
     },
     status: {
       type: String,

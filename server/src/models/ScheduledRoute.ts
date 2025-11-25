@@ -1,6 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IScheduledRoute, ILocation } from "../types";
 
+// Constantes de límites de longitud
+const MAX_ADDRESS_LENGTH = 200;
+const MAX_CITY_LENGTH = 100;
+const MAX_PROVINCE_LENGTH = 100;
+const MAX_COUNTRY_LENGTH = 100;
+
 // interface para rutas programadas
 export interface IScheduledRouteDocument
   extends Omit<IScheduledRoute, "_id">,
@@ -12,26 +18,26 @@ const LocationSchema = new Schema<ILocation>(
       type: String,
       required: [true, "La direccion es requerida"],
       trim: true,
-      maxlength: [200, "La direccion no puede exceder 200 caracteres"],
+      maxlength: [MAX_ADDRESS_LENGTH, `La direccion no puede exceder ${MAX_ADDRESS_LENGTH} caracteres`],
     },
     city: {
       type: String,
       required: [true, "La ciudad es requerida"],
       trim: true,
-      maxlength: [100, "La ciudad no puede exceder 100 caracteres"],
+      maxlength: [MAX_CITY_LENGTH, `La ciudad no puede exceder ${MAX_CITY_LENGTH} caracteres`],
     },
     province: {
       type: String,
       required: [true, "La provincia es requerida"],
       trim: true,
-      maxlength: [100, "La provincia no puede exceder 100 caracteres"],
+      maxlength: [MAX_PROVINCE_LENGTH, `La provincia no puede exceder ${MAX_PROVINCE_LENGTH} caracteres`],
     },
     country: {
       type: String,
       required: [true, "El pais es requerido"],
       trim: true,
       default: "Argentina",
-      maxlength: [100, "El pais no puede exceder 100 caracteres"],
+      maxlength: [MAX_COUNTRY_LENGTH, `El pais no puede exceder ${MAX_COUNTRY_LENGTH} caracteres`],
     },
     coordinates: {
       lat: {
