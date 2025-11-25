@@ -1,6 +1,13 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { IPayment } from "../types";
 
+// constantes de validación y configuración
+const MIN_AMOUNT = 0;
+const MAX_NOTES_LENGTH = 500;
+const CURRENCY_REGEX = /^[A-Z]{3}$/;
+const DEFAULT_CURRENCY = "ARS";
+const CURRENCY_CODE_LENGTH = 3;
+
 // interface para el documento de pago
 export interface IPaymentDocument extends Omit<IPayment, "_id">, Document {
   statusFormatted: string;
@@ -23,14 +30,14 @@ const PaymentSchema = new Schema(
     amount: {
       type: Number,
       required: [true, "El monto es requerido"],
-      min: [0, "El monto debe ser positivo"],
+      min: [MIN_AMOUNT, "El monto debe ser positivo o cero"],
     },
     currency: {
       type: String,
       required: true,
-      default: "ARS",
+      default: DEFAULT_CURRENCY,
       uppercase: true,
-      match: [/^[A-Z]{3}$/, "Moneda debe ser codigo de 3 letras"],
+      match: [CURRENCY_REGEX, `Moneda debe ser código ISO de ${CURRENCY_CODE_LENGTH} letras (ej: ARS, USD)`],
     },
     status: {
       type: String,
@@ -40,7 +47,7 @@ const PaymentSchema = new Schema(
     },
     notes: {
       type: String,
-      maxlength: [500, "Las notas no pueden exceder 500 caracteres"],
+      maxlength: [MAX_NOTES_LENGTH, `Las notas no pueden exceder ${MAX_NOTES_LENGTH} caracteres`],
     },
     processedBy: {
       type: Schema.Types.ObjectId,
