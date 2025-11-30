@@ -1,5 +1,3 @@
-import { Box, Button, Heading, Table, Tbody, Td, Th, Thead, Tr, HStack } from '@chakra-ui/react'
-
 const mockUsers = [
   { id: '1', nombre: 'Usuario 1', email: 'u1@email.com' },
   { id: '2', nombre: 'Usuario 2', email: 'u2@email.com' },
@@ -7,33 +5,33 @@ const mockUsers = [
 
 export function Users() {
   return (
-    <Box>
-      <Heading size="md" mb={4}>Usuarios</Heading>
-      <Button colorScheme="green" mb={4}>Nuevo usuario</Button>
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>Nombre</Th>
-            <Th>Email</Th>
-            <Th>Acciones</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
+    <div>
+      <h2 className="page-title">Usuarios</h2>
+      <button className="btn btn-green mb-4">Nuevo usuario</button>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
           {mockUsers.map(u => (
-            <Tr key={u.id}>
-              <Td>{u.nombre}</Td>
-              <Td>{u.email}</Td>
-              <Td>
-                <HStack spacing={2}>
-                  <Button size="sm">Editar</Button>
-                  <Button size="sm" colorScheme="red">Eliminar</Button>
-                </HStack>
-              </Td>
-            </Tr>
+            <tr key={u.id}>
+              <td>{u.nombre}</td>
+              <td>{u.email}</td>
+              <td>
+                <div className="hstack">
+                  <button className="btn btn-sm">Editar</button>
+                  <button className="btn btn-sm btn-danger">Eliminar</button>
+                </div>
+              </td>
+            </tr>
           ))}
-        </Tbody>
-      </Table>
-    </Box>
+        </tbody>
+      </table>
+    </div>
   )
 }
 

@@ -2,6 +2,10 @@
 node_modules/
 dist/
 coverage/
+.env
+.vscode/
+.DS_Store
+*.log
 package-lock.json
 .packager-lock.json
 
@@ -51,7 +55,6 @@ docker-manager.sh
 Dockerfile
 Dockerfile.dev
 nginx.conf
-docker-manager.sh
 
 # Docker Logs y Cache
 docker-logs/

@@ -1,29 +1,27 @@
-import { Box, Heading, SimpleGrid, Stat } from '@chakra-ui/react'
-
 export function Home() {
   return (
-    <Box>
-      <Heading size="md" mb={6}>Panel principal</Heading>
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
-        <Box p={4} borderWidth="1px" borderRadius="md">
-          <Stat.Root>
-            <Stat.Label>Usuarios</Stat.Label>
-            <Stat.ValueText>0</Stat.ValueText>
-          </Stat.Root>
-        </Box>
-        <Box p={4} borderWidth="1px" borderRadius="md">
-          <Stat.Root>
-            <Stat.Label>Reservas</Stat.Label>
-            <Stat.ValueText>0</Stat.ValueText>
-          </Stat.Root>
-        </Box>
-        <Box p={4} borderWidth="1px" borderRadius="md">
-          <Stat.Root>
-            <Stat.Label>Ingresos</Stat.Label>
-            <Stat.ValueText>$0</Stat.ValueText>
-          </Stat.Root>
-        </Box>
-      </SimpleGrid>
-    </Box>
+    <div>
+      <h2 className="page-title">Panel principal</h2>
+      <div className="grid3">
+        <div className="card">
+          <div className="stat">
+            <div className="stat-label">Usuarios</div>
+            <div className="stat-value">0</div>
+          </div>
+        </div>
+        <div className="card">
+          <div className="stat">
+            <div className="stat-label">Reservas</div>
+            <div className="stat-value">0</div>
+          </div>
+        </div>
+        <div className="card">
+          <div className="stat">
+            <div className="stat-label">Ingresos</div>
+            <div className="stat-value">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

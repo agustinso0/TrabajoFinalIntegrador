@@ -1,17 +1,16 @@
-import { Box, Button, Heading, Text, HStack } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
 
 export function RecordDetail() {
   const { id } = useParams()
   return (
-    <Box>
-      <Heading size="md" mb={4}>Detalle de registro</Heading>
-      <Text mb={4}>ID: {id}</Text>
-      <HStack spacing={3}>
-        <Button colorScheme="blue">Editar</Button>
-        <Button colorScheme="red">Eliminar</Button>
-      </HStack>
-    </Box>
+    <div>
+      <h2 className="page-title">Detalle de registro</h2>
+      <div className="mb-4">ID: {id}</div>
+      <div className="hstack">
+        <button className="btn btn-primary">Editar</button>
+        <button className="btn btn-danger">Eliminar</button>
+      </div>
+    </div>
   )
 }
 
