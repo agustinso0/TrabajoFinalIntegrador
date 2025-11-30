@@ -1,34 +1,48 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "type": "module",
   "description": "Backend Node.js/Express con TypeScript y MongoDB",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "start:ts": "ts-node --esm src/index.ts",
+    "dev": "nodemon --exec ts-node --esm src/index.ts",
     "test": "jest",
-    "postinstall": "tsc --init"
+    "build": "tsc",
+    "postinstall": "tsc --init",
+    "migrate": "npm run build && node dist/database/migrate.js",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "arca-facturacion": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mercadopago": "^2.0.8",
-    "mongoose": "^8.3.4"
+    "mongoose": "^8.3.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }

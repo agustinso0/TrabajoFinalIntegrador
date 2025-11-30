@@ -1,7 +1,62 @@
+# Dependencias y Salidas del Build
 node_modules/
 dist/
-.env
-.vscode/
-.DS_Store
 coverage/
+package-lock.json
+.packager-lock.json
+
+# Archivos del Sistema Operativo y Editor
+.DS_Store
+.vscode/
+
+# Logs y Archivos Temporales
+.env
 *.log
+.tmp/
+tmp/
+data/
+volumes/
+
+# --- Configuración y Archivos Sensibles ---
+
+# Entorno y Secrets
+.env_jeje
+docker.env
+.env.docker
+.env.production.local
+.env.development.local
+docker-secrets/
+.docker-secrets/
+
+# Backups y Bases de Datos
+*.sql
+*.dump
+mongodb-data/
+mongodb_backup/
+db-backup/
+
+# --- Configuración de Docker ---
+
+# Archivos de Docker Build/Run
+.docker/
+docker-data/
+.dockerignore
+*.dockerfile.backup
+docker-compose.override.yml
+docker-compose.local.yml
+docker-compose.dev.yml
+docker-compose.yml
+docker-manager.ps1
+docker-manager.sh
+Dockerfile
+Dockerfile.dev
+nginx.conf
+docker-manager.sh
+
+# Docker Logs y Cache
+docker-logs/
+*.docker.log
+.buildx-cache/
+
+# Archivos de estado de Docker Compose
+.docker-compose-state/
