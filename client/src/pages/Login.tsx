@@ -17,10 +17,11 @@ export default function Login() {
 
     // Validación hardcodeada
     if (email === "test@test.com" && password === "1234") {
-      setModal({ type: 'success', title: 'Login exitoso', message: '' })
+      setModal({ type: 'success', title: 'Login exitoso', message: 'Redirigiendo al panel principal...' })
       setTimeout(() => {
         closeModal()
-        navigate('/home')
+        console.log('Navegando a /home...')
+        navigate('/home', { replace: true })
       }, 1500)
     } else {
       setModal({ type: 'error', title: 'Credenciales incorrectas', message: 'Por favor, verifica tu email y contraseña.' })
@@ -28,7 +29,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-xl px-8 py-10">
           {/* Header */}

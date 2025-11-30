@@ -1,0 +1,59 @@
+Contexto
+
+- El prototipo es navegable y no funcional; valida flujo y jerarquías de interfaz.
+- Stack: React + TypeScript + Vite + Tailwind; routing con react-router-dom; iconografía con FontAwesome (@fortawesome/react-fontawesome).
+- Layout base: Header fijo full‑width arriba, Sidebar izquierda sticky (top‑16), Footer inferior y contenido central fluido sin max‑w global; cards con efecto glass (backdrop‑blur y border‑white/20).
+- Referencias: estructura central en project/TrabajoFinalIntegrador/client/src/layouts/AppLayout.tsx y rutas en project/TrabajoFinalIntegrador/client/src/routes/AppRouter.tsx.
+Criterios Globales
+
+- Layout: header fijo; sidebar sticky; footer visible; contenido fluido con cards y paddings p‑4 lg:p‑6.
+- Paleta: azul primario (blue‑600) con gradientes azules/morados para acciones (from‑blue‑500 to‑purple‑600); grises neutros para fondo/bordes; verdes/azules/púrpuras para estados.
+- Iconografía: usar FontAwesome (solid/brands); evitar emojis.
+- Tipografía: sistema desde index.css; jerarquías con tamaño/peso; usar page‑title y section‑title para encabezados.
+- Espaciado: escala 8px (gaps 2/4/6); cards con padding uniforme; reducción de márgenes laterales en el main.
+- Estados: placeholders visibles; vacíos con mensajes guía; loaders/skeleton simulados; animaciones suaves (hover:scale, transition).
+- Accesibilidad: label en formularios; roles en navegación; foco claro; contraste AA; role="main" y aria‑label en contenido; id="main-content".
+- Responsive: colapsar sidebar en móviles; grids de 1→2→3 columnas según ancho; compensación del header con pt‑16.
+- Impresión: @media print oculta header/sidebar/footer; fondo blanco; sin sombras; saltos de página en tablas.
+
+
+Anexo E — Perfil
+
+- Card principal con formulario de datos personales (Nombre, Apellido, Teléfono) con label y placeholder descriptivos.
+- Sección separada “Cambiar contraseña” con dos campos de contraseña y botón secundario.
+- Diseño: dividir en bloques con section-title , mantener alineaciones y espaciados paralelos; sin validaciones.
+- Referencia: project/TrabajoFinalIntegrador/client/src/pages/Profile.tsx:1 .
+Anexo F — Tabla + ABM de Usuarios
+
+- Tabla con cabecera sticky en desktop, zebra striping suave, acciones “Editar/Eliminar” por fila con botones compactos.
+- Botón de alta destacado sobre la tabla; en prototipo puede abrir una card/modal con inputs mínimos (Nombre, Email).
+- Indicadores: contador de usuarios simulado, estados vacíos con mensaje guía.
+- Referencia: project/TrabajoFinalIntegrador/client/src/pages/Users.tsx:1 .
+Anexo G — Formularios / ABM
+
+- Ejemplo de formulario con input , textarea , select ; todos etiquetados y con placeholders.
+- Ayuda contextual opcional bajo campos en texto gris; botones primarios/ secundarios definidos.
+- Organización vertical ( stack ) con ritmo consistente y anchos fluidos; sin validaciones ni dependencias.
+- Referencia: project/TrabajoFinalIntegrador/client/src/pages/FormsExample.tsx:1 .
+Anexo H — Lista de registros + filtros, paginado y búsqueda
+
+- Barra de controles superior: búsqueda, selectores de filtro y cantidad por página; botón “Aplicar”.
+- Tabla con columna “Nombre” enlazando al detalle del registro; columna “Acciones” con botones compactos.
+- Paginado estático al pie (números simulados, anterior/siguiente deshabilitados cuando corresponda).
+- Referencias: project/TrabajoFinalIntegrador/client/src/pages/RecordsList.tsx:1 y detalle en project/TrabajoFinalIntegrador/client/src/pages/RecordDetail.tsx:1 .
+Anexo J — Impresión de reporte
+
+- Vista imprimible con formato A4: título, fecha, resumen y tabla; márgenes generosos y tipografía legible.
+- Acción de window.print() con botón primario visible; ocultar navegación en modo impresión.
+- Estilos @media print para: fondo blanco, eliminación de sombras, ajuste de saltos de página en tablas largas.
+- Referencia: project/TrabajoFinalIntegrador/client/src/pages/Report.tsx:1 .
+Anexo K — Consulta + Reporte
+
+- Panel de consulta con búsqueda y filtros arriba; resultados abajo en card/tabla; acciones “Exportar” e “Imprimir”.
+- Chips/tags visuales para filtros aplicados; resumen de resultados: cantidad, rango temporal simulado.
+- Estructura en dos bloques: controles y resultados, con separación visual clara; sin funciones reales.
+- Referencia: project/TrabajoFinalIntegrador/client/src/pages/QueryReport.tsx:1 .
+Componentes Comunes
+
+- Card, Button (primario, secundario, peligro, link), Input/Select/Textarea, Table (thead/tbody, acciones), Pagination, Tag/Badge.
+- Estados: vacío, cargando simulado (skeleton), deshabilitado; todos con foco visible y contraste suficiente.>

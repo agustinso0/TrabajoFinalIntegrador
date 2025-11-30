@@ -18,6 +18,7 @@ export function AppRouter() {
       <Route path="/login" element={<Login />} />
       <Route path="/lost-password" element={<LostPassword />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
@@ -28,7 +29,6 @@ export function AppRouter() {
         <Route path="/records/:id" element={<RecordDetail />} />
         <Route path="/report" element={<Report />} />
         <Route path="/query-report" element={<QueryReport />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Route>
     </Routes>
