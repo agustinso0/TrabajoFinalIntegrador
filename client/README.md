@@ -61,20 +61,6 @@ Convenciones:
 - Tabla + ABM de Usuarios — Anexo F.
 - Estructura y estandarización de directorios/componentes.
 
-## Entregables por alumno
-
-Sugerencia de reparto (ajustable):
-
-- Bautista:
-  - Listado de Registros + Búsqueda + Paginado + Filtros.
-  - Visualización de registro individual.
-  - Operaciones de actualización/eliminación sobre lista o registro.
-
-- Juan Ignacio:
-  - Consultas por pantalla + reporte si corresponde.
-  - Generación de reportes para listados completos o filtrados.
-  - Tabla + ABM de Usuarios.
-
 ## Lineamientos de diseño
 
 - Layout fijo: Header arriba, Sidebar izquierda, Footer abajo.

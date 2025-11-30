@@ -1,19 +1,18 @@
-import { Box, Button, Heading, Input, Select, Stack, Textarea } from '@chakra-ui/react'
-
 export function FormsExample() {
   return (
-    <Box maxW="lg">
-      <Heading size="md" mb={4}>Ejemplo de formulario</Heading>
-      <Stack spacing={3}>
-        <Input placeholder="Título" />
-        <Textarea placeholder="Descripción" />
-        <Select placeholder="Estado">
+    <div className="card">
+      <h2 className="page-title">Ejemplo de formulario</h2>
+      <div className="stack">
+        <input className="input" placeholder="Título" />
+        <textarea className="textarea" placeholder="Descripción" />
+        <select className="select" defaultValue="">
+          <option value="" disabled>Estado</option>
           <option value="activo">Activo</option>
           <option value="inactivo">Inactivo</option>
-        </Select>
-        <Button colorScheme="blue">Guardar</Button>
-      </Stack>
-    </Box>
+        </select>
+        <button className="btn btn-primary">Guardar</button>
+      </div>
+    </div>
   )
 }
 

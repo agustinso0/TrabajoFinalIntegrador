@@ -1,18 +1,16 @@
-import { Box, Button, Heading, Input, Select, Stack, Text } from '@chakra-ui/react'
-
 export function QueryReport() {
   return (
-    <Box maxW="lg">
-      <Heading size="md" mb={4}>Consulta + Reporte</Heading>
-      <Stack spacing={3} mb={4}>
-        <Input placeholder="Buscar" />
-        <Select placeholder="Filtro">
+    <div className="card">
+      <h2 className="page-title">Consulta + Reporte</h2>
+      <div className="stack mb-4">
+        <input className="input" placeholder="Buscar" />
+        <select className="select" defaultValue="todos">
           <option value="todos">Todos</option>
-        </Select>
-        <Button colorScheme="blue">Consultar</Button>
-      </Stack>
-      <Text>Resultados y opciones de reporte</Text>
-    </Box>
+        </select>
+        <button className="btn btn-primary">Consultar</button>
+      </div>
+      <div>Resultados y opciones de reporte</div>
+    </div>
   )
 }
 

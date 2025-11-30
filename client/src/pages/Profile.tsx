@@ -1,23 +1,21 @@
-import { Box, Button, Heading, Input, Stack } from '@chakra-ui/react'
-
 export function Profile() {
   return (
-    <Box maxW="md">
-      <Heading size="md" mb={4}>Perfil del usuario</Heading>
-      <Stack spacing={3}>
-        <Input placeholder="Nombre" />
-        <Input placeholder="Apellido" />
-        <Input placeholder="Teléfono" />
-        <Button colorScheme="blue">Guardar cambios</Button>
-      </Stack>
+    <div className="card">
+      <h2 className="page-title">Perfil del usuario</h2>
+      <div className="stack">
+        <input className="input" placeholder="Nombre" />
+        <input className="input" placeholder="Apellido" />
+        <input className="input" placeholder="Teléfono" />
+        <button className="btn btn-primary">Guardar cambios</button>
+      </div>
 
-      <Heading size="sm" mt={8} mb={3}>Cambiar contraseña</Heading>
-      <Stack spacing={3}>
-        <Input placeholder="Contraseña actual" type="password" />
-        <Input placeholder="Nueva contraseña" type="password" />
-        <Button colorScheme="purple">Actualizar contraseña</Button>
-      </Stack>
-    </Box>
+      <h3 className="section-title">Cambiar contraseña</h3>
+      <div className="stack">
+        <input className="input" placeholder="Contraseña actual" type="password" />
+        <input className="input" placeholder="Nueva contraseña" type="password" />
+        <button className="btn">Actualizar contraseña</button>
+      </div>
+    </div>
   )
 }
 
