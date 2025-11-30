@@ -139,17 +139,6 @@ Recomendaciones:
 - Limitar orígenes CORS a dominios propios por instancia
 
 
-## Modelo de aislamiento por instancia (multi-tenant por despliegue)
-
-- Cada empresa/tenant se despliega como una instancia independiente con su propio .env, MONGODB_URI (base de datos dedicada), credenciales de pago y FRONTEND_URL.
-- No se comparte base de datos entre empresas, garantizando aislamiento de datos y simplificando cumplimiento.
-- COMPANY_NAME se usa en logs/health para identificar la instancia.
-
-Estrategia de despliegue típica:
-- Un repositorio de código compartido.
-- Un pipeline por empresa que inyecta su .env/secretos y hace deploy de su contenedor/VM.
-- Backups y monitoreo por base de datos/instancia.
-
 
 ## Endpoints principales
 
@@ -201,7 +190,7 @@ Asegurar variables en runtime: MONGODB_URI, JWT_SECRET, API_KEY, FRONTEND_URL, C
 
 ## Pagos
 
-- Integración con MercadoPago (mercadopago@^2). Añadir a .env las credenciales de cada empresa (ACCESS_TOKEN, PUBLIC_KEY) y mapearlas en la capa de configuración/servicio de pagos.
+- Integración con MercadoPago . Añadir a .env las credenciales de cada empresa (ACCESS_TOKEN, PUBLIC_KEY) y mapearlas en la capa de configuración/servicio de pagos.
 
 Variables típicas (ejemplo):
 ```
@@ -225,7 +214,3 @@ MP_PUBLIC_KEY=xxxx
 - 401/403: verificar token JWT en Authorization y roles/permisos si aplica.
 - Swagger vacío: revisar rutas/controllers/models y patrón en swagger.ts.
 
-
-## Licencia
-
-MIT (ver encabezado de swagger.ts).

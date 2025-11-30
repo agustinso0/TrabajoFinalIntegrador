@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import User from "../models/User";
 import { AuthenticatedRequest, ApiResponse } from "../types";
 
 // middleware para verificar JWT y cargar usuario

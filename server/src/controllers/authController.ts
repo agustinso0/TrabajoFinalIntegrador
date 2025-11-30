@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthenticatedRequest, ApiResponse } from "../types/index.js";
-import User from "../models/User.js";
-import { generateToken } from "../middlewares/auth.js";
-import { createError, asyncHandler } from "../middlewares/errorHandler.js";
+import { AuthenticatedRequest, ApiResponse } from "../types/index";
+import User from "../models/User";
+import { generateToken } from "../middlewares/auth";
+import { createError, asyncHandler } from "../middlewares/errorHandler";
 
 // constantes de mensajes y roles
 const DEFAULT_USER_ROLE = "passenger";
