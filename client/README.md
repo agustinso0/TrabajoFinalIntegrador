@@ -1,73 +1,110 @@
-# React + TypeScript + Vite
+# Frontend TFI — Prototipo navegable (no funcional)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend de referencia para el Trabajo Final Integrador. Objetivo: generar un prototipo navegable de las pantallas solicitadas, sin lógica de negocio ni integración.
 
-Currently, two official plugins are available:
+Desarrolladores frontend: Bautista y Juan Ignacio.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Ejecutar el proyecto
 
-## React Compiler
+- Requisitos: Node 18+.
+- Instalar dependencias: `npm install`.
+- Desarrollo: `npm run dev`.
+- Linter: `npm run lint`. 
+- Build: `npm run build`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Rama de trabajo: `frontend-development`.
 
-## Expanding the ESLint configuration
+## Tecnologías y estándares
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React + TypeScript + Vite.
+- UI con `@chakra-ui/react`.
+- Routing con `react-router-dom`.
+- ESLint con reglas estrictas TypeScript.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Estructura de carpetas
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+  components/        Elementos reutilizables (Header, Sidebar, Footer)
+  layouts/           Layouts de aplicación
+  pages/             Pantallas por anexo
+  routes/            Definición de rutas
+  assets/            Recursos estáticos
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Convenciones:
+- Nombres en PascalCase para componentes y páginas.
+- Un componente por archivo.
+- Sin lógica real; placeholders claros y accesibles.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Rutas y anexos
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `/login` — Anexo A (Login).
+- `/lost-password` — Anexo A (Recupero).
+- `/signup` — Anexo B (Registro).
+- `/home` — Anexo C (Home + estadísticas).
+- `/profile` — Anexo E (Perfil + actualización).
+- `/users` — Anexo F (Tabla + ABM).
+- `/abm` — Anexo G (Formularios / ABM).
+- `/records` — Anexo H (Listado + filtros + búsqueda + paginado).
+- `/records/:id` — Visualización de registro individual.
+- `/report` — Anexo J (Impresión de reporte).
+- `/query-report` — Anexo K (Consulta + Reporte).
+
+## Entregables globales
+
+- Login / Recupero de contraseña — Anexo A.
+- Registro — Anexo B.
+- Home + estadísticas — Anexo C.
+- Header, Menú/Sidebar y Footer — Anexo D.
+- Perfil de usuario — Anexo E.
+- Tabla + ABM de Usuarios — Anexo F.
+- Estructura y estandarización de directorios/componentes.
+
+## Lineamientos de diseño
+
+- Layout fijo: Header arriba, Sidebar izquierda, Footer abajo.
+- Paleta base: azul (`blue.600`) para elementos primarios.
+- Tipografía y espaciado de Chakra por defecto.
+- Componentes accesibles con roles y etiquetas.
+
+## Instrucciones por anexo
+
+### Anexo A — Login / Lost password
+- Login: email + contraseña, enlace a recuperación y registro.
+- Recupero: campo de email y acción de envío de enlace.
+
+### Anexo B — Sign up
+- Formulario básico con nombre, apellido, email y contraseña.
+
+### Anexo C — Home
+- Tarjetas de métricas principales (usuarios, reservas, ingresos) con valores placeholders.
+
+### Anexo D — Header, Menú/Sidebar y Footer
+- Header con navegación rápida (Home, Registros, Usuarios, Reporte).
+- Sidebar con enlaces a todas las secciones.
+- Footer con identificación del equipo.
+
+### Anexo E — Perfil
+- Formulario de datos personales y sección de cambio de contraseña.
+
+### Anexo F — Tabla + ABM de Usuarios
+- Tabla con acciones por fila (Editar/Eliminar) y botón de alta.
+
+### Anexo G — Formularios / ABM
+- Ejemplo de formulario con inputs, textarea y select.
+
+### Anexo H — Lista de registros + filtros, paginado y búsqueda
+- Controles de búsqueda, filtros y cantidad por página.
+- Tabla con navegación al detalle del registro.
+
+### Anexo J — Impresión de reporte
+- Vista imprimible y acción de `window.print()`.
+
+### Anexo K — Consulta + Reporte
+- Controles de búsqueda y filtros con área de resultados para exportar/imprimir.
+
+## Notas
+
+- Todas las pantallas son estáticas; no hay integración ni validaciones.
+- El objetivo es validar flujo y diseño de navegación.
