@@ -14,7 +14,7 @@ export function Footer() {
 
   const teamMembers = [
     { name: 'Tordini Bautista', role: 'Frontend Developer' },
-    { name: 'Juan Ignacio Martinez', role: 'Backend Developer' },
+    { name: 'Juan Ignacio Martinez Heguy', role: 'Backend Developer' },
     { name: 'Agustin Loss', role: 'UI/UX Designer' },
     { name: 'Darian Savenia', role: 'Project Manager' }
   ]
@@ -30,9 +30,9 @@ export function Footer() {
       <div className="max-w-screen-2xl mx-auto px-6 lg:px-8">
         {/* Main Footer Content */}
         <div className="py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Brand Section */}
-            <div className="lg:col-span-2">
+            <div>
               <div className="flex items-center space-x-4 mb-4">
                 <div className="group relative">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-modern">
@@ -53,59 +53,7 @@ export function Footer() {
               </p>
             </div>
 
-            {/* Team Section */}
-            <div>
-              <h4 className="text-sm font-semibold text-slate-800 mb-4 flex items-center">
-                <FontAwesomeIcon icon={faUsers} className="w-4 h-4 rounded bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs mr-2 p-1" />
-                Equipo de Desarrollo
-              </h4>
-              <div className="space-y-2">
-                {teamMembers.map((member, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white/50 transition-modern group">
-                    <div className="w-6 h-6 bg-gradient-to-br from-slate-100 to-slate-200 rounded-full flex items-center justify-center text-xs group-hover:from-blue-100 group-hover:to-blue-200 transition-modern">
-                      {member.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-slate-800">{member.name}</p>
-                      <p className="text-xs text-slate-500">{member.role}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Links & Info */}
-            <div>
-              <h4 className="text-sm font-semibold text-slate-800 mb-4 flex items-center">
-                <span className="w-4 h-4 rounded bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center text-white text-xs mr-2">i</span>
-                Información
-              </h4>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-2 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
-                  <span className="text-sm text-green-800 font-medium">Estado del Sistema</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-green-600 font-semibold">Operativo</span>
-                  </div>
-                </div>
-                <div className="p-2 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
-                  <p className="text-xs text-blue-800 font-medium mb-1">Versión del Sistema</p>
-                  <p className="text-sm font-mono text-blue-600">v1.0.0-prototype</p>
-                </div>
-                <div className="p-2 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200">
-                  <p className="text-xs text-purple-800 font-medium mb-1">Última Actualización</p>
-                  <p className="text-xs text-purple-600">
-                    {currentTime.toLocaleString('es-AR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
