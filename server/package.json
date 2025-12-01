@@ -11,7 +11,10 @@
     "test": "jest",
     "build": "tsc",
     "postinstall": "tsc --init",
-    "migrate": "npm run build && node dist/database/migrate.js",
+    "migrate": "node --loader ts-node/esm src/database/migrate.ts",
+    "migrate:seed": "npm run migrate seed",
+    "migrate:clean": "npm run migrate clean",
+    "migrate:reset": "npm run migrate reset",
     "test:watch": "jest --watch"
   },
   "keywords": [],
