@@ -22,7 +22,10 @@ const router = Router();
  *     summary: Obtener rutas disponibles
  *     description: Lista todas las rutas activas con sus horarios y precios
  *     tags: [Rutas]
+ *     security:
+ *       - apiKey: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: origin
  *         schema:
@@ -84,7 +87,10 @@ router.get("/", validateRouteSearch, getAvailableRoutes);
  *     summary: Buscar rutas específicas
  *     description: Busca rutas filtradas por origen, destino y fecha
  *     tags: [Rutas]
+ *     security:
+ *       - apiKey: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: origin
  *         required: true
@@ -128,7 +134,10 @@ router.get("/search", validateRouteSearch, searchRoutes);
  *     summary: Obtener rutas populares
  *     description: Lista las rutas más solicitadas por los usuarios
  *     tags: [Rutas]
+ *     security:
+ *       - apiKey: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: limit
  *         schema:
@@ -160,7 +169,10 @@ router.get("/popular", validatePagination, getPopularRoutes);
  *     summary: Obtener detalles de una ruta
  *     description: Retorna la información completa de una ruta específica
  *     tags: [Rutas]
+ *     security:
+ *       - apiKey: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: id
  *         required: true

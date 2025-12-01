@@ -11,6 +11,10 @@ export const apiKeyMiddleware = (
   const apiKey = req.header("X-API-Key") || (req.query.api_key as string);
   const requiredApiKey = process.env.API_KEY;
 
+  const exemptPaths = ["/api/v1/auth/register", "/api/v1/auth/login"];
+  const isExempt = exemptPaths.some((p) => (req.originalUrl || "").startsWith(p));
+  if (isExempt) return next();
+
   if (!requiredApiKey) {
     console.warn("⚠️ API_KEY no configurada en .env");
     return next(); // en desarrollo pasa sin api key

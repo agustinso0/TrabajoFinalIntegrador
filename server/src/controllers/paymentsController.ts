@@ -48,9 +48,10 @@ export const createManualPayment = asyncHandler(
     }
 
     // chequear permisos basicos
+    const resPassengerId = (reservation.passengerId as any)._id ?? reservation.passengerId;
     if (
       req.user.role === "passenger" &&
-      reservation.passengerId.toString() !== req.user._id?.toString()
+      resPassengerId.toString() !== req.user._id?.toString()
     ) {
       throw createError(
         "No tienes permisos para crear un pago para esta reserva",
@@ -118,9 +119,10 @@ export const getPaymentsByReservation = asyncHandler(
     }
 
     // solo puede ver sus propios pagos
+    const resPassengerId2 = (reservation.passengerId as any)._id ?? reservation.passengerId;
     if (
       req.user?.role === "passenger" &&
-      reservation.passengerId.toString() !== req.user._id?.toString()
+      resPassengerId2.toString() !== req.user._id?.toString()
     ) {
       throw createError(
         "No tienes permisos para ver los pagos de esta reserva",

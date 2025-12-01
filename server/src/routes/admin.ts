@@ -23,7 +23,10 @@ router.use(authenticateToken);
  *     description: Obtiene un resumen general con métricas clave del sistema. Requiere rol de operador o administrador
  *     tags: [Administración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Resumen obtenido exitosamente
@@ -59,8 +62,10 @@ router.get("/summary", requireOperator, getBasicSummary);
  *     description: Obtiene la lista completa de usuarios del sistema. Requiere rol de operador o administrador
  *     tags: [Administración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: page
  *         schema:
@@ -106,8 +111,10 @@ router.get("/users", requireOperator, validatePagination, getUsersList);
  *     description: Lista las reservas más recientes del sistema. Requiere rol de operador o administrador
  *     tags: [Administración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: limit
  *         schema:
@@ -143,7 +150,10 @@ router.get(
  *     description: Obtiene información sobre el estado actual del sistema. Requiere rol de operador o administrador
  *     tags: [Administración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Estado del sistema

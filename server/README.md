@@ -1,12 +1,27 @@
-# Backend – Sistema de Gestión de Transporte de Pasajeros (Puerta a Puerta)
+# Backend — Sistema de Gestión de Transporte de Pasajeros
 
-Backend Node.js/Express con TypeScript y MongoDB para gestionar rutas programadas, instancias de viaje, reservas y pagos. Cada empresa opera su propia instancia aislada (código compartido, despliegues independientes) con su propia base de datos y credenciales.
+Backend Node.js/Express con TypeScript y MongoDB para gestionar rutas programadas, instancias de viaje, reservas y pagos.
+
+## Inicio rápido
+
+Con Docker Compose (recomendado):
+
+```bash
+cd TrabajoFinalIntegrador
+docker compose up -d
+```
+
+Accesos:
+- API: `http://localhost:3001`
+- Health: `http://localhost:3001/health`
+
+Variables (template): `server/.env.example` ya listo para entorno local.
 
 - Runtime: Node.js (ESM) + TypeScript
 - Framework: Express
 - DB: MongoDB (Mongoose)
 - Seguridad: Helmet, CORS, JWT, API Key, Rate limiting, sanitización básica, prevención de NoSQL injection
-- Documentación: Swagger UI (OpenAPI 3)
+- Pruebas: Jest E2E para endpoints
 
 
 ## Estructura
@@ -16,8 +31,7 @@ server/
 ├─ src/
 │  ├─ config/
 │  │  ├─ database.ts        # Conexión a MongoDB
-│  │  ├─ security.ts        # CORS y patrones de validación
-│  │  └─ swagger.ts         # Especificación OpenAPI
+│  │  └─ security.ts        # CORS y patrones de validación
 │  ├─ controllers/          # Lógica de endpoints (por dominio)
 │  ├─ database/
 │  │  ├─ migrations/        # Migraciones de colecciones/índices
@@ -44,25 +58,23 @@ Rutas expuestas (prefijo /api/v1):
 - /config
 
 Health check: GET /health
-Swagger UI: GET /api-docs
 
 
-## Requisitos previos
+## Requisitos
 
-- Node.js 18+
-- MongoDB (local o administrado – URI por .env)
+- Docker Desktop (para Compose) o Node.js 18+ (modo clásico)
 
 
-## Configuración de entorno (.env)
+## Configuración de entorno
 
-Crear un archivo .env en server/ con al menos:
+Usar `server/.env.example` o duplicarlo como `.env`:
 
 ```
 # Puerto
 PORT=3001
 
-# Base de datos
-MONGODB_URI=mongodb://<usuario>:<password>@<host>:<puerto>/<db>?authSource=admin
+# Base de datos (local Compose)
+MONGODB_URI=mongodb://mongo:27017/tfi_local
 
 # Seguridad
 JWT_SECRET=una_clave_secreta_segura
@@ -77,30 +89,23 @@ COMPANY_NAME=Mi Empresa de Transporte
 
 Notas:
 - MONGODB_URI es obligatorio; si falta, el proceso termina con error.
-- API_KEY se exige para todas las rutas bajo /api (ver middleware apiKey).
+- API_KEY se exige para rutas bajo /api, excepto `/api/v1/auth/register` y `/api/v1/auth/login` que son públicas.
 - FRONTEND_URL se utiliza en la whitelist de CORS.
 
 
-## Instalación y scripts
+## Scripts
 
-Desde server/:
+Desde `server/`:
+- `npm run dev`: arranca en desarrollo con nodemon + ts-node (hot reload)
+- `npm run start`: ejecuta JavaScript compilado (dist/index.js)
+- `npm run build`: compila TypeScript a dist/
+- `npm run migrate`: compila y ejecuta el orquestador de migraciones (dist/database/migrate.js)
+- `npm test`: ejecuta Jest
+- `npm run test:e2e`: ejecuta pruebas end-to-end de todos los endpoints
 
-```bash
-npm install
-```
-
-Scripts definidos en package.json:
-- npm run dev: arranca en desarrollo con nodemon + ts-node (hot reload)
-- npm run start: ejecuta JavaScript compilado (dist/index.js)
-- npm run build: compila TypeScript a dist/
-- npm run migrate: compila y ejecuta el orquestador de migraciones (dist/database/migrate.js)
-- npm test: (placeholder) jest
-
-Flujo sugerido (desarrollo):
-1) Crear .env
-2) npm install
-3) npm run dev
-4) Abrir Swagger en http://localhost:3001/api-docs
+Desarrollo clásico:
+1) `npm install`
+2) `npm run dev`
 
 Para producción:
 1) npm ci
@@ -109,21 +114,21 @@ Para producción:
 4) npm run start
 
 
-## Documentación de API (Swagger)
+## Pruebas End-to-End (Jest)
 
-- Swagger UI: http://localhost:3001/api-docs
-- Base URL en dev: http://localhost:3001/api/v1
-- Autenticación soportada en Swagger:
-  - Bearer JWT (Authorization: Bearer <token>)
-  - API Key por header x-api-key
+- Ejecutar todas las pruebas E2E:
+  ```bash
+  cd server
+  npm run test:e2e
+  ```
+- Modo detallado:
+  ```bash
+  npm run test:e2e -- --verbose
+  ```
+- Qué hace: levanta el servidor en puerto dinámico, usa MongoDB en memoria, prepara datos de demo y valida los endpoints principales (`/auth`, `/routes`, `/reservations`, `/payments`, `/admin`, `/config`). Los endpoints protegidos requieren `X-API-Key` y `Bearer JWT`, gestionados automáticamente por los tests.
 
-La especificación se genera con swagger-jsdoc a partir de:
-- ./src/routes/*.ts
-- ./src/controllers/*.ts
-- ./src/models/*.ts
 
-
-## Seguridad y middleware
+## Seguridad
 
 En src/index.ts se configuran:
 - Helmet con CSP básica
@@ -134,9 +139,9 @@ En src/index.ts se configuran:
 - Manejo de errores centralizado y 404 (middlewares/errorHandler)
 
 Recomendaciones:
-- Rotar JWT_SECRET y API_KEY por instancia
-- Usar HTTPS en despliegues
-- Limitar orígenes CORS a dominios propios por instancia
+- Rotar `JWT_SECRET` y `API_KEY`.
+- Usar HTTPS en despliegues.
+- Ajustar `FRONTEND_URL` para CORS.
 
 
 
@@ -149,7 +154,7 @@ Recomendaciones:
 - Administración (/admin): administración de catálogos y operaciones.
 - Configuración (/config): CompanyConfigService para inicialización y lectura pública.
 
-Todos requieren header x-api-key. Endpoints protegidos requieren Bearer JWT.
+Todos requieren header `X-API-Key`. Endpoints protegidos requieren `Bearer JWT`.
 
 
 ## Base de datos
@@ -187,6 +192,27 @@ docker run --env-file TrabajoFinalIntegrador/server/.env -p 3001:3001 transporte
 
 Asegurar variables en runtime: MONGODB_URI, JWT_SECRET, API_KEY, FRONTEND_URL, COMPANY_NAME, y credenciales de pago.
 
+## Docker Compose (local)
+
+Ubicación del archivo: `TrabajoFinalIntegrador/docker-compose.yml`.
+
+Pasos:
+
+1) Opcional: duplicar `server/.env.example` a `server/.env` y ajustar valores.
+
+2) Levantar todo desde la raíz del proyecto:
+
+```bash
+docker compose up -d
+```
+
+Servicios:
+- Backend: `http://localhost:3001` (health en `/health`).
+- Frontend: `http://localhost:5173`.
+- MongoDB: `localhost:27017`.
+
+La configuración por defecto en `server/.env.example` apunta a `mongodb://mongo:27017/tfi_local` y permite CORS desde `http://localhost:5173`.
+
 
 ## Pagos
 
@@ -203,14 +229,13 @@ MP_PUBLIC_KEY=xxxx
 
 - Validaciones con express-validator donde aplique
 - Lint/format: (puede integrarse según preferencias del repo)
-- Tests: jest (pendiente de definición)
+- Tests: Jest E2E y unitarios (si aplica)
 
 
 ## Troubleshooting
 
 - Error MONGODB_URI no encontrada en .env: definir variable y reiniciar.
 - CORS: ajustar FRONTEND_URL; Postman/Insomnia funcionan sin origin.
-- API Key: enviar header x-api-key con el valor configurado en .env.
+- API Key: enviar header `X-API-Key` con el valor configurado en `.env`.
 - 401/403: verificar token JWT en Authorization y roles/permisos si aplica.
-- Swagger vacío: revisar rutas/controllers/models y patrón en swagger.ts.
 

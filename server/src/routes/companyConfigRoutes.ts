@@ -13,6 +13,10 @@ const router = express.Router();
  *     summary: Obtener información pública de la empresa
  *     description: Retorna información general de la empresa sin necesidad de autenticación
  *     tags: [Configuración]
+ *     security:
+ *       - apiKey: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Información pública de la empresa
@@ -41,7 +45,10 @@ router.get("/public", CompanyConfigController.getPublicInfo);
  *     description: Retorna la configuración completa de la empresa. Requiere rol de administrador
  *     tags: [Configuración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Configuración completa
@@ -65,7 +72,10 @@ router.get(
  *     description: Crea una nueva configuración de empresa. Requiere rol de administrador
  *     tags: [Configuración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -105,8 +115,10 @@ router.post(
  *     description: Actualiza la configuración existente de la empresa. Requiere rol de administrador
  *     tags: [Configuración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -145,8 +157,10 @@ router.put(
  *     description: Elimina la configuración de la empresa. Requiere rol de administrador
  *     tags: [Configuración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -176,7 +190,10 @@ router.delete(
  *     description: Crea la configuración inicial del sistema. Requiere rol de administrador
  *     tags: [Configuración]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       201:
  *         description: Configuración inicializada correctamente

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 // constantes de configuracion de MongoDB
 const DEFAULT_MAX_POOL_SIZE = 5;
@@ -15,9 +16,16 @@ const MONGO_OPTIONS = {
 };
 
 // conectar con mongo
+let mongod: MongoMemoryServer | null = null;
+
 const connectDB = async (): Promise<void> => {
   try {
-    const mongoURI = process.env.MONGODB_URI;
+    let mongoURI = process.env.MONGODB_URI;
+
+    if (process.env.USE_IN_MEMORY_DB === "true") {
+      mongod = await MongoMemoryServer.create();
+      mongoURI = mongod.getUri();
+    }
 
     if (!mongoURI) {
       throw new Error("MONGODB_URI no encontrada en .env");
@@ -49,6 +57,10 @@ export const disconnectDB = async (): Promise<void> => {
   try {
     await mongoose.connection.close();
     console.log("👋 MongoDB desconectado ok");
+    if (mongod) {
+      await mongod.stop();
+      mongod = null;
+    }
   } catch (error) {
     console.error("❌ Error al desconectar:", error);
   }

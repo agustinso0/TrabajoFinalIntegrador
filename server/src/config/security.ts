@@ -6,15 +6,15 @@ export const corsConfig = {
     origin: string | undefined,
     callback: (err: Error | null, allow?: boolean) => void
   ) => {
-    // lista de origenes permitidos
+    const backendOrigin = `http://localhost:${process.env.PORT || 3001}`;
     const allowedOrigins = [
+      backendOrigin,
       "http://localhost:3000",
       "http://localhost:5173",
       "http://localhost:8080",
       process.env.FRONTEND_URL,
     ].filter(Boolean);
 
-    // permitir requests sin origin (herramientas como postman, insomnia, etc)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {

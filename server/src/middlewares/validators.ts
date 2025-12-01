@@ -179,8 +179,6 @@ export const validateCreatePayment = [
     .matches(MONGODB_ID_REGEX)
     .withMessage("ID de reserva debe ser un ObjectId válido de MongoDB"),
 
-  body("amount").isFloat({ min: MIN_AMOUNT }).withMessage(`Monto debe ser mayor a ${MIN_AMOUNT}`),
-
   body("notes")
     .optional()
     .trim()

@@ -25,6 +25,11 @@ const swaggerDefinition: SwaggerDefinition = {
       description: "Servidor de desarrollo local",
     },
   ],
+  security: [
+    {
+      apiKey: [],
+    },
+  ],
   components: {
     securitySchemes: {
       bearerAuth: {
@@ -36,8 +41,19 @@ const swaggerDefinition: SwaggerDefinition = {
       apiKey: {
         type: "apiKey",
         in: "header",
-        name: "x-api-key",
+        name: "X-API-Key",
         description: "Clave API requerida para todas las peticiones",
+      },
+    },
+    parameters: {
+      ApiKeyHeader: {
+        name: "X-API-Key",
+        in: "header",
+        required: true,
+        schema: {
+          type: "string",
+        },
+        description: "Clave API requerida para endpoints protegidos",
       },
     },
     schemas: {
@@ -77,17 +93,13 @@ const swaggerDefinition: SwaggerDefinition = {
             format: "email",
             description: "Correo electrónico del usuario",
           },
-          dni: {
-            type: "string",
-            description: "Documento Nacional de Identidad",
-          },
-          phone: {
+          phoneNumber: {
             type: "string",
             description: "Número de teléfono",
           },
           role: {
             type: "string",
-            enum: ["passenger", "operator", "admin"],
+            enum: ["passenger", "driver", "operator", "admin"],
             description: "Rol del usuario en el sistema",
           },
           createdAt: {
@@ -137,7 +149,7 @@ const swaggerDefinition: SwaggerDefinition = {
             },
             description: "Días de la semana en que opera (0=Domingo, 6=Sábado)",
           },
-          active: {
+          isActive: {
             type: "boolean",
             description: "Indica si la ruta está activa",
           },
@@ -174,13 +186,7 @@ const swaggerDefinition: SwaggerDefinition = {
           },
           status: {
             type: "string",
-            enum: [
-              "scheduled",
-              "boarding",
-              "in_transit",
-              "completed",
-              "cancelled",
-            ],
+            enum: ["scheduled", "in-progress", "completed", "cancelled"],
             description: "Estado actual del viaje",
           },
           currentPrice: {
@@ -244,12 +250,12 @@ const swaggerDefinition: SwaggerDefinition = {
           },
           paymentMethod: {
             type: "string",
-            enum: ["mercadopago", "cash", "transfer"],
+            enum: ["cash", "manual"],
             description: "Método de pago utilizado",
           },
           status: {
             type: "string",
-            enum: ["pending", "approved", "rejected", "refunded"],
+            enum: ["pending", "approved", "rejected", "cancelled"],
             description: "Estado del pago",
           },
           externalId: {

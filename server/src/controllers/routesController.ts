@@ -115,7 +115,7 @@ export const getAvailableRoutes = asyncHandler(
           _id: "$vehicle._id",
           licensePlate: "$vehicle.licensePlate",
           brand: "$vehicle.brand",
-          model: "$vehicle.model",
+          model: "$vehicle.vehicleModel",
           capacity: "$vehicle.capacity",
           features: "$vehicle.features",
         },

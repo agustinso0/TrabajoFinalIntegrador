@@ -1,25 +1,37 @@
-# Frontend TFI — Prototipo navegable (no funcional)
+# Frontend — Prototipo navegable
 
 Frontend de referencia para el Trabajo Final Integrador. Objetivo: generar un prototipo navegable de las pantallas solicitadas, sin lógica de negocio ni integración.
 
 Desarrolladores frontend: Bautista y Juan Ignacio.
 
-## Ejecutar el proyecto
+## Inicio rápido
 
+Con Docker Compose:
+
+```bash
+cd TrabajoFinalIntegrador
+docker compose up -d
+```
+
+Accesos:
+- Frontend: `http://localhost:5173`
+- Backend (docs): `http://localhost:3001/api-docs`
+
+Modo clásico (sin Docker):
 - Requisitos: Node 18+.
 - Instalar dependencias: `npm install`.
 - Desarrollo: `npm run dev`.
-- Linter: `npm run lint`. 
+- Linter: `npm run lint`.
 - Build: `npm run build`.
 
 Rama de trabajo: `frontend-development`.
 
-## Tecnologías y estándares
+## Tecnologías
 
 - React + TypeScript + Vite.
-- UI con `@chakra-ui/react`.
 - Routing con `react-router-dom`.
-- ESLint con reglas estrictas TypeScript.
+- Estilos: Tailwind CSS (plugin Vite incluido).
+- ESLint con reglas TypeScript.
 
 ## Estructura de carpetas
 
@@ -104,7 +116,13 @@ Convenciones:
 ### Anexo K — Consulta + Reporte
 - Controles de búsqueda y filtros con área de resultados para exportar/imprimir.
 
+## Entorno
+
+Variables:
+- `client/.env.example` incluye `VITE_API_URL` (por defecto `http://localhost:3001/api/v1`).
+- Puedes duplicarlo a `.env` y ajustar según necesidad.
+
 ## Notas
 
-- Todas las pantallas son estáticas; no hay integración ni validaciones.
-- El objetivo es validar flujo y diseño de navegación.
+- Prototipo navegable; sin lógica de negocio.
+- Objetivo: validar flujo y diseño.

@@ -163,8 +163,8 @@ export const getReservationById = asyncHandler(
     }
 
     // verificar que puede ver esta reserva
-    const isOwner =
-      reservation.passengerId.toString() === req.user?._id?.toString();
+    const resPassengerId = (reservation.passengerId as any)._id ?? reservation.passengerId;
+    const isOwner = resPassengerId.toString() === req.user?._id?.toString();
     const isAuthorized =
       req.user?.role === "admin" || req.user?.role === "operator" || isOwner;
 
@@ -202,8 +202,8 @@ export const cancelReservation = asyncHandler(
     }
 
     // Verificar permisos
-    const isOwner =
-      reservation.passengerId.toString() === req.user?._id?.toString();
+    const resPassengerId2 = (reservation.passengerId as any)._id ?? reservation.passengerId;
+    const isOwner = resPassengerId2.toString() === req.user?._id?.toString();
     const isAuthorized =
       req.user?.role === "admin" || req.user?.role === "operator" || isOwner;
 
@@ -281,8 +281,8 @@ export const updateReservation = asyncHandler(
     }
 
     // Verificar permisos
-    const isOwner =
-      reservation.passengerId.toString() === req.user?._id?.toString();
+    const resPassengerId3 = (reservation.passengerId as any)._id ?? reservation.passengerId;
+    const isOwner = resPassengerId3.toString() === req.user?._id?.toString();
     const isAuthorized =
       req.user?.role === "admin" || req.user?.role === "operator" || isOwner;
 

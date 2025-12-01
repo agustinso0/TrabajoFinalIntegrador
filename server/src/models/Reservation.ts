@@ -7,8 +7,8 @@ const MAX_SPECIAL_REQUESTS_LENGTH = 500;
 
 // interface para las reservas
 export interface IReservationDocument extends Document {
-  routeInstanceId: string;
-  passengerId: string;
+  routeInstanceId: any;
+  passengerId: any;
   seatNumber?: number;
   status: "pending" | "confirmed" | "cancelled" | "completed";
   totalAmount: number;
@@ -22,11 +22,13 @@ export interface IReservationDocument extends Document {
 const ReservationSchema = new Schema<IReservationDocument>(
   {
     routeInstanceId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "RouteInstance",
       required: [true, "La instancia de ruta es requerida"],
     },
     passengerId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "El pasajero es requerido"],
     },
     seatNumber: {

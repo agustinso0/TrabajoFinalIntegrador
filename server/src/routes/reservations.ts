@@ -34,6 +34,7 @@ router.use(authenticateToken);
  *     description: Permite a un usuario registrado crear una reserva de pasaje
  *     tags: [Reservas]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
@@ -43,27 +44,27 @@ router.use(authenticateToken);
  *             type: object
  *             required:
  *               - routeInstanceId
- *               - seatNumbers
+ *               - paymentMethod
  *             properties:
  *               routeInstanceId:
  *                 type: string
  *                 description: ID de la instancia de ruta
  *                 example: 507f1f77bcf86cd799439011
- *               seatNumbers:
- *                 type: array
- *                 items:
- *                   type: number
- *                 description: Números de asientos a reservar
- *                 example: [12, 13]
- *               passengerInfo:
- *                 type: object
- *                 properties:
- *                   firstName:
- *                     type: string
- *                   lastName:
- *                     type: string
- *                   dni:
- *                     type: string
+ *               paymentMethod:
+ *                 type: string
+ *                 enum: [cash, manual]
+ *                 description: Método de pago
+ *               specialRequests:
+ *                 type: string
+ *                 description: Comentarios del pasajero (opcional)
+ *               pickupLocation:
+ *                 type: string
+ *                 description: Punto de retiro (opcional)
+ *               dropoffLocation:
+ *                 type: string
+ *                 description: Punto de descenso (opcional)
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       201:
  *         description: Reserva creada exitosamente
@@ -100,8 +101,10 @@ router.post(
  *     description: Lista todas las reservas realizadas por el usuario autenticado
  *     tags: [Reservas]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: page
  *         schema:
@@ -154,8 +157,10 @@ router.get("/my-reservations", validatePagination, getUserReservations);
  *     description: Lista todas las reservas del sistema. Requiere rol de operador o administrador
  *     tags: [Reservas]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: page
  *         schema:
@@ -200,8 +205,10 @@ router.get("/", requireOperator, validatePagination, getAllReservations);
  *     description: Retorna la información completa de una reserva específica
  *     tags: [Reservas]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -230,8 +237,10 @@ router.get("/:id", validateObjectIdParam("id"), getReservationById);
  *     description: Modifica los datos de una reserva existente
  *     tags: [Reservas]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: id
  *         required: true
@@ -279,8 +288,10 @@ router.put("/:id", validateObjectIdParam("id"), updateReservation);
  *     description: Cancela una reserva existente y libera los asientos
  *     tags: [Reservas]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: id
  *         required: true

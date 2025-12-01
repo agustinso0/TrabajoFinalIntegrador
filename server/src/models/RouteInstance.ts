@@ -7,9 +7,9 @@ const MIN_SEATS = 0;
 
 // interface para instancias de viajes
 export interface IRouteInstanceDocument extends Document {
-  scheduledRouteId: string;
-  vehicleId: string;
-  driverId: string;
+  scheduledRouteId: any;
+  vehicleId: any;
+  driverId: any;
   departureDate: Date;
   departureTime: string;
   arrivalTime?: string;
@@ -24,15 +24,18 @@ export interface IRouteInstanceDocument extends Document {
 const RouteInstanceSchema = new Schema<IRouteInstanceDocument>(
   {
     scheduledRouteId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "ScheduledRoute",
       required: [true, "La ruta programada es requerida"],
     },
     vehicleId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Vehicle",
       required: [true, "El vehiculo es requerido"],
     },
     driverId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "El conductor es requerido"],
     },
     departureDate: {

@@ -34,7 +34,10 @@ router.use(authenticateToken);
  *     description: Registra un pago manual para una reserva
  *     tags: [Pagos]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -43,20 +46,18 @@ router.use(authenticateToken);
  *             type: object
  *             required:
  *               - reservationId
- *               - amount
  *               - paymentMethod
  *             properties:
  *               reservationId:
  *                 type: string
  *                 description: ID de la reserva
- *               amount:
- *                 type: number
- *                 description: Monto del pago
- *                 example: 5000
  *               paymentMethod:
  *                 type: string
- *                 enum: [mercadopago, cash, transfer]
- *                 description: Método de pago
+ *                 enum: [cash, manual]
+ *                 description: Método de pago (cash o manual)
+ *               notes:
+ *                 type: string
+ *                 description: Notas del operador (opcional)
  *     responses:
  *       201:
  *         description: Pago creado exitosamente
@@ -89,8 +90,10 @@ router.post(
  *     description: Lista todos los pagos asociados a una reserva específica
  *     tags: [Pagos]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: reservationId
  *         required: true
@@ -125,8 +128,10 @@ router.get(
  *     description: Modifica el estado de un pago. Requiere rol de operador o administrador
  *     tags: [Pagos]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: path
  *         name: paymentId
  *         required: true
@@ -144,7 +149,7 @@ router.get(
  *             properties:
  *               status:
  *                 type: string
- *                 enum: [pending, approved, rejected, refunded]
+ *                 enum: [pending, approved, rejected, cancelled]
  *                 description: Nuevo estado del pago
  *     responses:
  *       200:
@@ -172,8 +177,10 @@ router.patch(
  *     description: Obtiene el historial completo de pagos. Requiere rol de operador o administrador
  *     tags: [Pagos]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
  *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *       - in: query
  *         name: page
  *         schema:
@@ -188,7 +195,7 @@ router.patch(
  *         name: status
  *         schema:
  *           type: string
- *           enum: [pending, approved, rejected, refunded]
+ *           enum: [pending, approved, rejected, cancelled]
  *     responses:
  *       200:
  *         description: Historial de pagos
@@ -223,7 +230,10 @@ router.get(
  *     description: Obtiene estadísticas y métricas sobre los pagos. Requiere rol de operador o administrador
  *     tags: [Pagos]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Estadísticas de pagos

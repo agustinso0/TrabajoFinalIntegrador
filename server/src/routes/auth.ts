@@ -26,6 +26,7 @@ const router = Router();
  *     summary: Registro de nuevo usuario
  *     description: Permite registrar un nuevo usuario en el sistema proporcionando sus datos personales
  *     tags: [Autenticación]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -37,8 +38,7 @@ const router = Router();
  *               - lastName
  *               - email
  *               - password
- *               - dni
- *               - phone
+ *               - phoneNumber
  *             properties:
  *               firstName:
  *                 type: string
@@ -55,10 +55,7 @@ const router = Router();
  *                 format: password
  *                 minLength: 6
  *                 example: miPassword123
- *               dni:
- *                 type: string
- *                 example: "12345678"
- *               phone:
+ *               phoneNumber:
  *                 type: string
  *                 example: "+54 9 11 1234-5678"
  *     responses:
@@ -93,6 +90,7 @@ router.post("/register", authLimiter, validateRegister, register);
  *     summary: Inicio de sesión
  *     description: Autentica un usuario existente y devuelve un token JWT
  *     tags: [Autenticación]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -144,7 +142,10 @@ router.post("/login", authLimiter, validateLogin, login);
  *     description: Retorna la información del perfil del usuario autenticado
  *     tags: [Autenticación]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Perfil obtenido exitosamente
@@ -169,7 +170,10 @@ router.get("/profile", authenticateToken, getProfile);
  *     description: Permite al usuario modificar su información personal
  *     tags: [Autenticación]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -183,7 +187,7 @@ router.get("/profile", authenticateToken, getProfile);
  *               lastName:
  *                 type: string
  *                 example: Pérez García
- *               phone:
+ *               phoneNumber:
  *                 type: string
  *                 example: "+54 9 11 9876-5432"
  *     responses:
@@ -214,7 +218,10 @@ router.put("/profile", authenticateToken, validateUpdateProfile, updateProfile);
  *     description: Permite al usuario cambiar su contraseña actual
  *     tags: [Autenticación]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     requestBody:
  *       required: true
  *       content:
@@ -265,7 +272,10 @@ router.put(
  *     description: Genera un nuevo token JWT utilizando el token actual
  *     tags: [Autenticación]
  *     security:
+ *       - apiKey: []
  *       - bearerAuth: []
+ *     parameters:
+ *       - $ref: '#/components/parameters/ApiKeyHeader'
  *     responses:
  *       200:
  *         description: Token renovado exitosamente

@@ -2,12 +2,10 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import swaggerUi from "swagger-ui-express";
 import connectDB, { disconnectDB } from "./config/database.js";
 import { corsConfig } from "./config/security.js";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 import { apiKeyMiddleware } from "./middlewares/apiKey.js";
-import swaggerSpec from "./config/swagger.js";
 import {
   generalLimiter,
   sanitizeInput,
@@ -21,14 +19,17 @@ import adminRouter from "./routes/admin.js";
 import authRouter from "./routes/auth.js";
 import companyConfigRouter from "./routes/companyConfigRoutes.js";
 import { CompanyConfigService } from "./services/CompanyConfigService.js";
+import User from "./models/User.js";
+import Vehicle from "./models/Vehicle.js";
+import ScheduledRoute from "./models/ScheduledRoute.js";
+import RouteInstance from "./models/RouteInstance.js";
 
 // cargar variables de entorno
 dotenv.config();
 
 const app = express();
 
-// puerto del servidor (3001 por defecto si no esta en .env)
-const PORT = process.env.PORT || 3001;
+// puerto del servidor (se resuelve al iniciar)
 
 // config de seguridad basica
 app.use(
@@ -45,16 +46,7 @@ app.use(
   })
 );
 
-// documentacion de la API con Swagger
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec, {
-    explorer: true,
-    customCss: ".swagger-ui .topbar { display: none }",
-    customSiteTitle: "API Transporte - Documentación",
-  })
-);
+// documentacion de la API removida
 
 // limitar requests
 app.use(generalLimiter);
@@ -120,31 +112,131 @@ const setupConfig = async () => {
   }
 };
 
-// arrancar todo
-const startServer = async () => {
-  await connectDB();
-  await setupConfig();
+const seedDemoData = async () => {
+  const existing = await RouteInstance.findOne({});
+  if (existing) return;
 
-  app.listen(PORT, () => {
-    console.log(`server andando en puerto ${PORT}`);
-    console.log(`${process.env.COMPANY_NAME || "Sistema de Transporte"}`);
-    console.log(`API Key: ${process.env.API_KEY ? "OK" : "falta configurar"}`);
+  const adminExists = await User.findOne({ email: "admin.local@example.com" });
+  if (!adminExists) {
+    await User.create({
+      email: "admin.local@example.com",
+      password: "AdminPass123",
+      firstName: "Admin",
+      lastName: "Local",
+      phoneNumber: "+54 11 5555-0001",
+      role: "admin",
+    });
+  }
+
+  const operatorExists = await User.findOne({ email: "operador.local@example.com" });
+  if (!operatorExists) {
+    await User.create({
+      email: "operador.local@example.com",
+      password: "Operador456",
+      firstName: "Juan",
+      lastName: "Pérez",
+      phoneNumber: "+54 11 5555-0002",
+      role: "operator",
+    });
+  }
+
+  const passengerExists = await User.findOne({ email: "test.user2@example.com" });
+  if (!passengerExists) {
+    await User.create({
+      email: "test.user2@example.com",
+      password: "Password123",
+      firstName: "Test",
+      lastName: "User",
+      phoneNumber: "+54 11 2222-2222",
+      role: "passenger",
+    });
+  }
+
+  const driver = await User.create({
+    email: "driver@example.com",
+    password: "driver123",
+    firstName: "Chofer",
+    lastName: "Demo",
+    phoneNumber: "+54 11 1111-1111",
+    role: "driver",
+  });
+
+  const vehicle = await Vehicle.create({
+    licensePlate: "AB123CD",
+    brand: "Mercedes",
+    vehicleModel: "Sprinter",
+    year: 2020,
+    capacity: 30,
+    features: ["Aire", "WiFi"],
+    driverId: driver._id,
+  });
+
+  const scheduledRoute = await ScheduledRoute.create({
+    name: "Buenos Aires - Córdoba",
+    origin: {
+      address: "Av. Corrientes 1000",
+      city: "Buenos Aires",
+      province: "Buenos Aires",
+      country: "Argentina",
+      coordinates: { lat: -34.6037, lng: -58.3816 },
+    },
+    destination: {
+      address: "Av. Colón 500",
+      city: "Córdoba",
+      province: "Córdoba",
+      country: "Argentina",
+      coordinates: { lat: -31.4201, lng: -64.1888 },
+    },
+    description: "Servicio directo",
+    duration: 420,
+    basePrice: 15000,
+    isActive: true,
+  });
+
+  const today = new Date();
+  const departureDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  await RouteInstance.create({
+    scheduledRouteId: scheduledRoute._id.toString(),
+    vehicleId: vehicle._id.toString(),
+    driverId: driver._id.toString(),
+    departureDate,
+    departureTime: "08:00",
+    arrivalTime: "15:00",
+    currentPrice: 18000,
+    availableSeats: 25,
+    status: "scheduled",
+    notes: "",
   });
 };
 
+// arrancar todo
+let server: any;
+
+export const startServer = async () => {
+  await connectDB();
+  await setupConfig();
+  await seedDemoData();
+
+  const port = process.env.PORT !== undefined ? Number(process.env.PORT) : 3001;
+  server = app.listen(port, () => {
+    console.log(`server andando en puerto ${port}`);
+    console.log(`${process.env.COMPANY_NAME || "Sistema de Transporte"}`);
+    console.log(`API Key: ${process.env.API_KEY ? "OK" : "falta configurar"}`);
+  });
+  return server;
+};
+
 // manejar cierre
-process.on("SIGTERM", async () => {
-  console.log(" chau servidor...");
+export const stopServer = async () => {
+  if (server) {
+    await new Promise((resolve) => server.close(resolve));
+  }
   await disconnectDB();
-  process.exit(0);
-});
+};
 
-process.on("SIGINT", async () => {
-  console.log(" chau servidor...");
-  await disconnectDB();
-  process.exit(0);
-});
-
-startServer().catch(console.error);
+if (process.env.NODE_ENV !== "test") {
+  startServer().catch(console.error);
+}
 
 export default app;
