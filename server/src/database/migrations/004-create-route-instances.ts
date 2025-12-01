@@ -42,7 +42,7 @@ export const up = async () => {
       arrivalTime: "12:30",
       availableSeats: 20,
       status: "scheduled",
-      price: 4200,
+      currentPrice: 4200,
     },
     {
       scheduledRouteId: rutasDisponibles[0]._id,
@@ -53,7 +53,7 @@ export const up = async () => {
       arrivalTime: "18:00",
       availableSeats: 15,
       status: "scheduled",
-      price: 4200,
+      currentPrice: 4200,
     },
     {
       scheduledRouteId: rutasDisponibles[1]._id,
@@ -64,7 +64,7 @@ export const up = async () => {
       arrivalTime: "06:00",
       availableSeats: 18,
       status: "scheduled",
-      price: 8500,
+      currentPrice: 8500,
     },
     {
       scheduledRouteId: rutasDisponibles[2]._id,
@@ -75,7 +75,7 @@ export const up = async () => {
       arrivalTime: "17:30",
       availableSeats: 20,
       status: "scheduled",
-      price: 2500,
+      currentPrice: 2500,
     },
     {
       scheduledRouteId: rutasDisponibles[3]._id,
@@ -86,7 +86,7 @@ export const up = async () => {
       arrivalTime: "14:00",
       availableSeats: 15,
       status: "scheduled",
-      price: 5800,
+      currentPrice: 5800,
     },
   ];
 
