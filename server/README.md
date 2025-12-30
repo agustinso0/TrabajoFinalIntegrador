@@ -96,10 +96,10 @@ Notas:
 ## Scripts
 
 Desde `server/`:
-- `npm run dev`: arranca en desarrollo con nodemon + ts-node (hot reload)
-- `npm run start`: ejecuta JavaScript compilado (dist/index.js)
-- `npm run build`: compila TypeScript a dist/
-- `npm run migrate`: compila y ejecuta el orquestador de migraciones (dist/database/migrate.js)
+- `npm run dev`: arranca en desarrollo con `vite-node` (TS cargado por Vite, hot reload)
+- `npm run build`: construye bundle SSR para Node con Vite (`vite build --config vite.server.config.ts`)
+- `npm run start`: ejecuta `node dist/index.js` (usar tras `npm run build`)
+- `npm run migrate`: ejecuta el orquestador de migraciones en TypeScript
 - `npm test`: ejecuta Jest
 - `npm run test:e2e`: ejecuta pruebas end-to-end de todos los endpoints
 
